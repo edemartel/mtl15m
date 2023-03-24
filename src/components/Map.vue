@@ -5,8 +5,7 @@
                 attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a>">
             </l-tile-layer>
             <l-control-attribution prefix="" position="bottomright">
-                &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
-            </l-control-attribution>  
+            </l-control-attribution>
         </l-map>
     </div>
 </template>
@@ -38,6 +37,12 @@ export default defineComponent({
 
 <style scoped>
 .map-owner {
+    height: 100%;
+}
+</style>
+<style>
+.leaflet-control-container {
+    width: 100%;
     height: 100%;
 }
 </style>
