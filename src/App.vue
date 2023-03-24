@@ -2,15 +2,16 @@
   <Map></Map>
   <div v-if="!loadingCompleted" class="loading-overlay">
     <LoadingSpinner role="status"></LoadingSpinner>
-    <p class="loading-message">Chargement des données...</p>
+    <p class="loading-message" v-t="'loading'"></p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import Map from './components/Map.vue'
 import { useAmenityStore } from './stores/amenities';
 import LoadingSpinner from "./components/LoadingSpinner.vue";
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: { Map, LoadingSpinner },
@@ -31,11 +32,45 @@ export default defineComponent({
       }
     });
 
+    const i18n = useI18n();
+
+    const locale = computed<string>({
+      get() {
+        return i18n.locale.value;
+      },
+      set(value) {
+        localStorage.setItem('locale', value);
+        i18n.locale.value = value;
+      }
+    });
+
+    const desiredLocale = getDesiredLocale();
+    if (desiredLocale) {
+      i18n.locale.value = desiredLocale;
+    }
+
     return {
+      locale,
       loadingCompleted
     }
   }
 });
+
+function getDesiredLocale() {
+  let locale = localStorage.getItem('locale');
+  if (!locale) {
+    for (const language of navigator.languages) {
+      const index = language.indexOf('-');
+      const lang = (index === -1 ? language : language.substring(0, index)).toLowerCase();
+      if (lang === 'fr' || lang === 'en') {
+        locale = `${lang}-CA`;
+        localStorage.setItem('locale', locale);
+        break;
+      }
+    }
+  }
+  return locale;
+}
 </script>
 
 <style scoped>
