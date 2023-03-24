@@ -29,10 +29,11 @@ jobs:
             sudo update-locale LANG=fr_CA.UTF-8
       - name: Generate data
         run: tools/run_all.sh
-      - name: Install dependencies, build and test
+      - name: Install dependencies, lint, build and test
         run: |
           npm ci
-          npm run build --if-present
+          npm run lint
+          npm run build
           npm run coverage
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3

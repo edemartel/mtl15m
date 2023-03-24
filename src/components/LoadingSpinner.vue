@@ -1,11 +1,11 @@
 <!-- From https://loading.io/css/ -->
 <template>
-    <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+  <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -13,7 +13,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-})
+});
 </script>
 <style scoped>
 .lds-ring {

@@ -1,3 +1,3 @@
 export default {
-    loading: "Chargement des données..."
-}
+    loading: 'Chargement des données...'
+};

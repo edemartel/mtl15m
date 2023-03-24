@@ -1,7 +1,7 @@
 export enum AmenityType {
-    FoodStore = "FOOD_STORE",
-    School = "SCHOOL",
-    Park = "PARK",
+    FoodStore = 'FOOD_STORE',
+    School = 'SCHOOL',
+    Park = 'PARK',
 }
 
 export interface Position {

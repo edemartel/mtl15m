@@ -1,5 +1,5 @@
 import { createPinia, setActivePinia } from 'pinia';
-import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { List } from 'immutable';
 import { useAmenityStore } from '../../src/stores/amenities';
 import { Amenity, AmenityType } from '../../src/models/amenity';
