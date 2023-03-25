@@ -24,6 +24,10 @@ with zipfile.ZipFile(os.path.join(source_path, 'map', '98100015-fra.zip')) as zi
                 if pop >= MIN_POPULATION:
                     population[row[2]] = pop
 
+with open(os.path.join(source_path, 'map', 'limites-terrestres.geojson'), 'r', encoding='utf-8') as input_file:
+    ground_boundaries = geojson.load(input_file)
+    ground_boundaries = ops.unary_union([geometry.shape(f.geometry) for f in ground_boundaries.features])
+
 from_proj = pyproj.CRS('EPSG:3347')
 to_proj = pyproj.CRS('EPSG:4326')
 project = pyproj.Transformer.from_crs(
@@ -38,8 +42,8 @@ with shapefile.Reader(os.path.join(source_path, 'map', 'lad_000a21a_f.zip')) as 
 
         shape = geometry.shape(shape_rec.shape.__geo_interface__)
         projected = ops.transform(project, shape)
-
-        mapped = geojson.mapping.to_mapping(projected)
+        intersected = ground_boundaries.intersection(projected)
+        mapped = geojson.mapping.to_mapping(intersected)
 
         properties = {
             'population': pop,
