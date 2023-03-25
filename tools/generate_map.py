@@ -46,7 +46,7 @@ with shapefile.Reader(os.path.join(source_path, 'map', 'lad_000a21a_f.zip')) as 
             'area': float(shape_rec.record.SUPTERRE)
         }
 
-        features.append(geojson.Feature(shape_rec.record.IDUGD, mapped, properties))
+        features.append(geojson.Feature(shape_rec.record.ADIDU, mapped, properties))
 
 with open(os.path.join(destination_path, 'map.json'), 'w', encoding='utf-8') as output_file:
     feature_collection = geojson.FeatureCollection(features)
