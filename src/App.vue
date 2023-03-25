@@ -15,7 +15,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import MapView from './components/MapView.vue';
-import { useAmenityStore } from './stores/amenities';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 import { useI18n } from 'vue-i18n';
 import { useMapStore } from './stores/map';
@@ -25,11 +24,9 @@ export default defineComponent({
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
-        const amenityStore = useAmenityStore();
         const mapStore = useMapStore();
 
         const storeLoads = Promise.allSettled([
-            amenityStore.loadAmenities(),
             mapStore.loadMap()
         ]);
         storeLoads.then(promises => {
