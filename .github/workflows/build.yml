@@ -23,12 +23,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: fr_CA.UTF-8
-        run: |
-            sudo locale-gen fr_CA.UTF-8
-            sudo update-locale LANG=fr_CA.UTF-8
-      - name: Generate data
-        run: tools/run_all.sh
       - name: Install dependencies, lint, build and test
         run: |
           npm ci
