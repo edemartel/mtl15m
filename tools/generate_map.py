@@ -41,13 +41,16 @@ with shapefile.Reader(os.path.join(source_path, 'map', 'lad_000a21a_f.zip')) as 
             continue
 
         shape = geometry.shape(shape_rec.shape.__geo_interface__)
-        projected = ops.transform(project, shape)
-        intersected = ground_boundaries.intersection(projected)
-        mapped = geojson.mapping.to_mapping(intersected)
+        shape = ops.transform(project, shape)
+        shape = ground_boundaries.intersection(shape)
 
+        center_point = geojson.mapping.to_mapping(shape.centroid)
+
+        mapped = geojson.mapping.to_mapping(shape)
         properties = {
             'population': pop,
-            'area': float(shape_rec.record.SUPTERRE)
+            'area': float(shape_rec.record.SUPTERRE),
+            'center': center_point
         }
 
         features.append(geojson.Feature(shape_rec.record.ADIDU, mapped, properties))
