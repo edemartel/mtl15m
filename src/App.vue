@@ -18,16 +18,19 @@ import MapView from './components/MapView.vue';
 import { useAmenityStore } from './stores/amenities';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 import { useI18n } from 'vue-i18n';
+import { useMapStore } from './stores/map';
 
 export default defineComponent({
     components: { MapView, LoadingSpinner },
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
-        const store = useAmenityStore();
+        const amenityStore = useAmenityStore();
+        const mapStore = useMapStore();
 
         const storeLoads = Promise.allSettled([
-            store.loadAmenities()
+            amenityStore.loadAmenities(),
+            mapStore.loadMap()
         ]);
         storeLoads.then(promises => {
             loadingCompleted.value = true;
