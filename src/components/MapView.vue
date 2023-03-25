@@ -14,7 +14,6 @@
       <l-geo-json
         :geojson="mapStore.features"
         :options="geoJsonOptions"
-        :options-style="styleOptions"
       ></l-geo-json>
       <l-control-attribution
         prefix=""
@@ -31,6 +30,7 @@ import { defineComponent } from 'vue';
 import { LMap, LTileLayer, LGeoJson, LControlAttribution } from '@vue-leaflet/vue-leaflet';
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
+import { Feature } from 'geojson';
 
 export default defineComponent({
     components: {
@@ -41,24 +41,21 @@ export default defineComponent({
     },
     setup() {
         const mapStore = useMapStore();
-        const styleOptions: L.StyleFunction = feature => {
-            return {
-                weight: 1,
-                opacity: 0.8,
-                color: 'black'
-            };
-        };
         const geoJsonOptions: L.GeoJSONOptions = {
-            onEachFeature(feature, layer) {
-                if(feature.id){
+            onEachFeature(feature: Feature, layer: L.GeoJSON) {
+                if (feature.id) {
                     layer.bindTooltip(feature.id as string);
                 }
+                layer.setStyle({
+                    weight: 1,
+                    opacity: 0.8,
+                    color: 'black'
+                });
             }
         };
         return {
             mapStore,
-            geoJsonOptions,
-            styleOptions
+            geoJsonOptions
         };
     }
 });
@@ -74,5 +71,8 @@ export default defineComponent({
 .leaflet-control-container {
   width: 100%;
   height: 100%;
+}
+path.leaflet-interactive:focus {
+    outline: none;
 }
 </style>
