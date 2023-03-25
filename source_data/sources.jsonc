@@ -13,6 +13,10 @@
         // Locaux commerciaux
         "https://data.montreal.ca/dataset/f8582c4d-a933-4306-bb27-d883e13dd207/resource/2f8d12aa-f338-4a4f-a516-3438142074a9/download/occupation-commerciale-2022.csv",
         // Batiments municipaux
-        "https://data.montreal.ca/dataset/05ae679d-3fd5-4e00-ad11-19697e1e80ac/resource/1dfeb734-2b5e-47a9-ab3b-fb55e67b99f0/download/batiments-municipaux.csv"
+        "https://data.montreal.ca/dataset/05ae679d-3fd5-4e00-ad11-19697e1e80ac/resource/1dfeb734-2b5e-47a9-ab3b-fb55e67b99f0/download/batiments-municipaux.csv",
+        // Espaces verts
+        "https://data.montreal.ca/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/f34c3555-c285-4ef3-a55c-f0f5c440ad2d/download/espace_vert.csv",
+        // Établissements d'enseignement
+        "https://www.donneesquebec.ca/recherche/dataset/2d3b5cf8-b347-49c7-ad3b-bd6a9c15e443/resource/2ae11c05-03b2-4006-bdb2-a49a4fa41c23/download/etablissements-meq-mes-esrishp.zip"
     ]
 }

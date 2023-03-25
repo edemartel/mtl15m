@@ -30,6 +30,3 @@ coverage/*
 source_data/*
 !source_data/download_data.ps1
 !source_data/sources.jsonc
-
-# Generated data
-/public/data/*
