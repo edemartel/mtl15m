@@ -31,6 +31,8 @@ import { LMap, LTileLayer, LGeoJson, LControlAttribution } from '@vue-leaflet/vu
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
+import { AreaProperties, SCORE_INCREMENT } from '../models/area_properties';
+
 
 export default defineComponent({
     components: {
@@ -40,17 +42,29 @@ export default defineComponent({
         LControlAttribution
     },
     setup() {
+        const knownColours = ['Blue', 'Green', 'Yellow', 'Orange', 'Red', 'Black'];
+        
         const mapStore = useMapStore();
         const geoJsonOptions: L.GeoJSONOptions = {
             onEachFeature(feature: Feature, layer: L.GeoJSON) {
                 if (feature.id) {
                     layer.bindTooltip(feature.id as string);
                 }
-                layer.setStyle({
-                    weight: 1,
-                    opacity: 0.8,
-                    color: 'black'
-                });
+                if (feature.properties) {
+                    const properties = feature.properties as AreaProperties;
+                    const foodDistance = properties.distances.food_store;
+                    let colour = knownColours[knownColours.length - 1];
+                    if(foodDistance !== undefined) {
+                        const score = Math.min(Math.floor(foodDistance / SCORE_INCREMENT), knownColours.length - 1);
+                        colour = knownColours[score];
+                    }
+                    layer.setStyle({
+                        weight: 1,
+                        fillOpacity: 0.7,
+                        fillColor: colour,
+                        stroke: false
+                    });
+                }
             }
         };
         return {
