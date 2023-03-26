@@ -54,26 +54,6 @@ with open(os.path.join(source_path, 'amenities', 'occupation-commerciale-2022.cs
             amenities.setdefault(category, []).append(pt)
 
 
-with open(os.path.join(source_path, 'amenities', 'batiments-municipaux.csv'), 'r', encoding='utf-8', newline='') as data_file:
-    reader = csv.reader(data_file)
-    next(reader, None)
-    
-    for row in reader:
-        _,_,_,_,_,_,usageName,_,_,_,_,_,_,_,_ = row
-        
-        category = None
-
-        usageName = usageName.lower()
-        if usageName == 'bibliothèque':
-            category = 'library'
-        elif usageName.startswith('piscine'):
-            category = 'swimming_pool'
-        
-        if category:
-            pt = [float(LONG), float(LAT)]
-            amenities.setdefault(category, []).append(pt)
-
-
 with open(os.path.join(source_path, 'amenities', 'espace_vert.csv'), 'r', encoding='utf-8', newline='') as data_file:
     reader = csv.reader(data_file)
     next(reader, None)
