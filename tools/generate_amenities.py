@@ -1,5 +1,5 @@
 import os
-from data import source_path, destination_path
+from data import source_path, generated_path
 import csv
 import json
 import shapefile
@@ -95,12 +95,12 @@ with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq
         
         pt: geometry.Point = geometry.shape(shape_rec.shape.__geo_interface__)
         match level:
-            case 'primare':
+            case 'primaire':
                 amenities.setdefault('primary_school', []).append([pt.x, pt.y])
             case 'secondaire':
                 amenities.setdefault('secondary_school', []).append([pt.x, pt.y])
 
-os.makedirs(os.path.join(destination_path, 'amenities'), exist_ok=True)
+os.makedirs(os.path.join(generated_path, 'amenities'), exist_ok=True)
 for type, items in amenities.items():
-    with open(os.path.join(destination_path, 'amenities', '{}.json'.format(type)), 'w', encoding='utf-8') as output_file:
+    with open(os.path.join(generated_path, 'amenities', '{}.json'.format(type)), 'w', encoding='utf-8') as output_file:
         json.dump(items, output_file)
