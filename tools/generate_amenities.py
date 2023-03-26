@@ -4,6 +4,8 @@ import csv
 import json
 import shapefile
 from shapely import geometry
+from shapely import ops
+import pyproj
 
 amenities = {}
 
@@ -99,6 +101,29 @@ with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq
                 amenities.setdefault('primary_school', []).append([pt.x, pt.y])
             case 'secondaire':
                 amenities.setdefault('secondary_school', []).append([pt.x, pt.y])
+
+from_proj = pyproj.CRS('EPSG:2950')
+to_proj = pyproj.CRS('EPSG:4326')
+project = pyproj.Transformer.from_crs(
+    from_proj, to_proj, always_xy=True).transform
+
+
+known_stops = set()
+with shapefile.Reader(os.path.join(source_path, 'amenities', 'stm_sig.zip/stm_arrets_sig.shp'), encoding='latin1') as reader:
+     for shape_rec in reader.iterShapeRecords():
+        if not shape_rec.record.route_id:
+            continue # not real stops
+        if not any(int(x) in [1, 2, 5] for x in shape_rec.record.route_id.split(',')):
+            continue # only keep green, orange and blue metro lines
+        if shape_rec.record.stop_code in [10282, 10286, 10288]:
+            continue # remove Laval orange line stations
+        if shape_rec.record.stop_code in known_stops:
+            continue # skip duplicates
+        known_stops.add(shape_rec.record.stop_code)
+
+        pt: geometry.Point = geometry.shape(shape_rec.shape.__geo_interface__)
+        pt = ops.transform(project, pt)
+        amenities.setdefault('metro_station', []).append([pt.x, pt.y])
 
 os.makedirs(os.path.join(generated_path, 'amenities'), exist_ok=True)
 for type, items in amenities.items():

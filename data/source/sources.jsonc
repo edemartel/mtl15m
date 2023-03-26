@@ -17,6 +17,8 @@
         // Espaces verts
         "https://data.montreal.ca/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/f34c3555-c285-4ef3-a55c-f0f5c440ad2d/download/espace_vert.csv",
         // Établissements d'enseignement
-        "https://www.donneesquebec.ca/recherche/dataset/2d3b5cf8-b347-49c7-ad3b-bd6a9c15e443/resource/2ae11c05-03b2-4006-bdb2-a49a4fa41c23/download/etablissements-meq-mes-esrishp.zip"
+        "https://www.donneesquebec.ca/recherche/dataset/2d3b5cf8-b347-49c7-ad3b-bd6a9c15e443/resource/2ae11c05-03b2-4006-bdb2-a49a4fa41c23/download/etablissements-meq-mes-esrishp.zip",
+        // Tracés des lignes de bus et de métro
+        "http://www.stm.info/sites/default/files/gtfs/stm_sig.zip"
     ]
 }
