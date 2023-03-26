@@ -54,6 +54,17 @@ with open(os.path.join(source_path, 'amenities', 'occupation-commerciale-2022.cs
             amenities.setdefault(category, []).append(pt)
 
 
+with open(os.path.join(source_path, 'amenities', 'lieuxculturels.csv'), 'r', encoding='utf-8', newline='') as data_file:
+    reader = csv.reader(data_file)
+    next(reader, None)
+    
+    for row in reader:
+        _,NomReseau,_,_,_,_,_,_,_,Longitude,Latitude,_ = row
+        
+        if NomReseau.lower() == 'bibliothèque':
+            pt = [float(Longitude), float(Latitude)]
+            amenities.setdefault('library', []).append(pt)           
+
 with open(os.path.join(source_path, 'amenities', 'espace_vert.csv'), 'r', encoding='utf-8', newline='') as data_file:
     reader = csv.reader(data_file)
     next(reader, None)

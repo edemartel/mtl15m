@@ -8,6 +8,5 @@ export enum AmenityType {
     Pharmacy = 'pharmacy',
     PrimarySchool = 'primary_school',
     Restaurant = 'restaurant',
-    SecondarySchool= 'secondary_school',
-    SwimmingPool= 'swimming_pool',
+    SecondarySchool= 'secondary_school'
 }
