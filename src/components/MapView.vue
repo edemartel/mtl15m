@@ -12,6 +12,7 @@
         attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a>"
       ></l-tile-layer>
       <l-geo-json
+        ref="mapLayer"
         :geojson="mapStore.features"
         :options="geoJsonOptions"
       ></l-geo-json>
@@ -26,12 +27,13 @@
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
-import { defineComponent } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue';
 import { LMap, LTileLayer, LGeoJson, LControlAttribution } from '@vue-leaflet/vue-leaflet';
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties, SCORE_INCREMENT } from '../models/area_properties';
+import { AmenityType } from '../models/amenity_type';
 
 
 export default defineComponent({
@@ -41,35 +43,59 @@ export default defineComponent({
         LGeoJson,
         LControlAttribution
     },
-    setup() {
+    props: {
+        selectedType: {
+            type: String as PropType<AmenityType>,
+            default: AmenityType.FoodStore
+        }
+    },
+    setup(props) {
         const knownColours = ['Blue', 'Green', 'Yellow', 'Orange', 'Red', 'Black'];
         
-        const mapStore = useMapStore();
+        function updateAreaColours(layer: L.GeoJSON, amenityType: AmenityType) {
+            if (layer.feature) {
+                const feature = layer.feature as Feature;
+                const properties = feature.properties as AreaProperties;
+                const foodDistance = properties.distances[amenityType];
+                let colour = knownColours[knownColours.length - 1];
+                if(foodDistance !== undefined) {
+                    const score = Math.min(Math.floor(foodDistance / SCORE_INCREMENT), knownColours.length - 1);
+                    colour = knownColours[score];
+                }
+                layer.setStyle({
+                    weight: 1,
+                    fillOpacity: 0.7,
+                    fillColor: colour,
+                    stroke: false
+                });
+            }else {
+                layer.resetStyle();
+            }
+        }
+        
+        const mapLayer = ref<InstanceType<typeof LGeoJson> | null>(null);
+
         const geoJsonOptions: L.GeoJSONOptions = {
             onEachFeature(feature: Feature, layer: L.GeoJSON) {
                 if (feature.id) {
                     layer.bindTooltip(feature.id as string);
                 }
-                if (feature.properties) {
-                    const properties = feature.properties as AreaProperties;
-                    const foodDistance = properties.distances.food_store;
-                    let colour = knownColours[knownColours.length - 1];
-                    if(foodDistance !== undefined) {
-                        const score = Math.min(Math.floor(foodDistance / SCORE_INCREMENT), knownColours.length - 1);
-                        colour = knownColours[score];
-                    }
-                    layer.setStyle({
-                        weight: 1,
-                        fillOpacity: 0.7,
-                        fillColor: colour,
-                        stroke: false
-                    });
-                }
+                updateAreaColours(layer, props.selectedType);
             }
         };
+
+        watch(() => props.selectedType, (type, oldType) => {
+            if (type !== oldType && mapLayer.value?.leafletObject) {
+                mapLayer.value.leafletObject.eachLayer(layer => {
+                    updateAreaColours(layer as L.GeoJSON, type);
+                });
+            }
+        });
+
         return {
-            mapStore,
-            geoJsonOptions
+            mapStore: useMapStore(),
+            geoJsonOptions,
+            mapLayer
         };
     }
 });
