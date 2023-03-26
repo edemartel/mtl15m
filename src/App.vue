@@ -1,5 +1,14 @@
 <template>
-  <MapView></MapView>
+  <main>
+    <TypeFilter
+      id="filter"
+      @selected-type-changed="onSelectedTypeChanged"
+    ></TypeFilter>
+    <MapView
+      id="map"
+      :selected-type="selectedType"
+    ></MapView>
+  </main>
   <div
     v-if="!loadingCompleted"
     class="loading-overlay"
@@ -18,9 +27,11 @@ import MapView from './components/MapView.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 import { useI18n } from 'vue-i18n';
 import { useMapStore } from './stores/map';
+import { AmenityType } from './models/amenity_type';
+import TypeFilter from './components/TypeFilter.vue';
 
 export default defineComponent({
-    components: { MapView, LoadingSpinner },
+    components: { MapView, LoadingSpinner, TypeFilter },
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
@@ -56,9 +67,15 @@ export default defineComponent({
         }
 
         return {
+            selectedType: ref(AmenityType.FoodStore),
             locale,
             loadingCompleted
         };
+    },
+    methods: {
+        onSelectedTypeChanged(type: AmenityType) {
+            this.selectedType = type;
+        }
     }
 });
 
@@ -80,6 +97,19 @@ function getDesiredLocale() {
 </script>
 
 <style scoped>
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+#map {
+    flex: 1;
+}
+#filter {
+    padding: 0.5em;
+}
 .loading-overlay {
   position: fixed;
   top: 0;
