@@ -1,5 +1,8 @@
 <template>
-  <div class="map-owner">
+  <div 
+    ref="mapOwner"
+    class="map-owner"
+  >
     <l-map
       ref="map"
       :zoom="11"
@@ -92,11 +95,35 @@ export default defineComponent({
             }
         });
 
+        const map = ref<InstanceType<typeof LMap> | null>();
+
+        const resizeObserver = new ResizeObserver(entries => {
+            const rect = entries[0].contentRect;
+            if (map.value?.leafletObject && rect.width > 0 && rect.height > 0) {
+                map.value.leafletObject.invalidateSize({
+                    pan: true,
+                });
+            }
+        });
+
         return {
             mapStore: useMapStore(),
             geoJsonOptions,
-            mapLayer
+            map,
+            mapLayer,
+            mapOwner: ref<HTMLDivElement | null>(null),
+            resizeObserver
         };
+    },
+    mounted() {
+        if(this.mapOwner) {
+            this.resizeObserver.observe(this.mapOwner);
+        }
+    },
+    unmounted() {
+        if(this.mapOwner) {
+            this.resizeObserver.unobserve(this.mapOwner);
+        }
     }
 });
 
