@@ -25,11 +25,3 @@ dist-ssr
 
 # Code coverage
 coverage/*
-
-# Source data
-source_data/*
-!source_data/download_data.ps1
-!source_data/sources.jsonc
-
-# Generated data
-/public/data/*

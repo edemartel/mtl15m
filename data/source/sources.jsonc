@@ -12,7 +12,13 @@
         "https://data.montreal.ca/dataset/c1d65779-d3cb-44e8-af0a-b9f2c5f7766d/resource/28a4957d-732e-48f9-8adb-0624867d9bb0/download/businesses.csv",
         // Locaux commerciaux
         "https://data.montreal.ca/dataset/f8582c4d-a933-4306-bb27-d883e13dd207/resource/2f8d12aa-f338-4a4f-a516-3438142074a9/download/occupation-commerciale-2022.csv",
-        // Batiments municipaux
-        "https://data.montreal.ca/dataset/05ae679d-3fd5-4e00-ad11-19697e1e80ac/resource/1dfeb734-2b5e-47a9-ab3b-fb55e67b99f0/download/batiments-municipaux.csv"
+        // Lieux culturels
+        "https://data.montreal.ca/dataset/ceb2427e-aa50-4d06-b13a-d1b21e2702b9/resource/974ca8d4-ed85-4c77-a79f-9f765e4c1b32/download/lieuxculturels.csv",
+        // Espaces verts
+        "https://data.montreal.ca/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/f34c3555-c285-4ef3-a55c-f0f5c440ad2d/download/espace_vert.csv",
+        // Établissements d'enseignement
+        "https://www.donneesquebec.ca/recherche/dataset/2d3b5cf8-b347-49c7-ad3b-bd6a9c15e443/resource/2ae11c05-03b2-4006-bdb2-a49a4fa41c23/download/etablissements-meq-mes-esrishp.zip",
+        // Tracés des lignes de bus et de métro
+        "http://www.stm.info/sites/default/files/gtfs/stm_sig.zip"
     ]
 }
