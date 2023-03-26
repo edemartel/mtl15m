@@ -5,7 +5,7 @@ import geojson.geometry
 import pyproj
 from shapely import geometry
 from shapely import ops
-from data import source_path, public_path
+from data import source_path, generated_path
 import shapefile
 import csv
 import zipfile
@@ -55,6 +55,6 @@ with shapefile.Reader(os.path.join(source_path, 'map', 'lad_000a21a_f.zip')) as 
 
         features.append(geojson.Feature(shape_rec.record.ADIDU, mapped, properties))
 
-with open(os.path.join(public_path, 'map.json'), 'w', encoding='utf-8') as output_file:
+with open(os.path.join(generated_path, 'map.json'), 'w', encoding='utf-8') as output_file:
     feature_collection = geojson.FeatureCollection(features)
     geojson.dump(feature_collection, output_file)
