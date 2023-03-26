@@ -67,15 +67,25 @@ with open(os.path.join(source_path, 'amenities', 'lieuxculturels.csv'), 'r', enc
             pt = [float(Longitude), float(Latitude)]
             amenities.setdefault('library', []).append(pt)
 
+def get_all_exterior_points(polygon):
+    result = []
+    if polygon.geom_type == 'Polygon':
+        return polygon.exterior.coords
+    elif polygon.geom_type == 'MultiPolygon':
+        result = []
+        for part in polygon.geoms:
+            result.extend(get_all_exterior_points(part))
+        return result
+
 with open(os.path.join(source_path, 'amenities', 'espace_vert.json'), 'r', encoding='utf-8', newline='') as data_file:
     parks: geojson.FeatureCollection = geojson.load(data_file)
 
     for feature in parks.features:
         park_type = feature.properties['TYPO1']
         if park_type and park_type.lower().startswith('parc'):
-            polygon = geometry.shape(feature.geometry)
-            # TODO: might be better to instead consider park boundaries
-            amenities.setdefault('park', []).append([polygon.centroid.x, polygon.centroid.y])
+            polygon = geometry.shape(feature.geometry).simplify(0.0001)
+            points = set(get_all_exterior_points(polygon))
+            amenities.setdefault('park', []).extend(points)
 
 
 with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq-mes-esrishp.zip/PPS_Public_Ecole.shp'), encoding='latin1') as reader:
