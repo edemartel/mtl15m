@@ -40,6 +40,7 @@ with open(os.path.join(source_path, 'amenities', 'occupation-commerciale-2022.cs
 
         category = None
 
+        # For list of known usages, see https://data.montreal.ca/dataset/f8582c4d-a933-4306-bb27-d883e13dd207/resource/bb891287-3690-4a5a-9641-09cea02a8cc7/download/usages.csv
         if ID_USAGE1 == 'A':
             if ID_USAGE2 == '41' and ID_USAGE3 == '103':
                 category = 'pharmacy'
