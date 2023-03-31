@@ -90,19 +90,16 @@ with open(os.path.join(source_path, 'amenities', 'espace_vert.json'), 'r', encod
 
 with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq-mes-esrishp.zip/PPS_Public_Ecole.shp'), encoding='latin1') as reader:
     for shape_rec in reader.iterShapeRecords():
-        level = shape_rec.record.ORDRE_ENS.lower()
-        if level != 'primaire' and level != 'secondaire':
-            continue
         cp = shape_rec.record.CD_POSTL_I
         if cp[0] != 'H' or cp[0:2] == 'H0' or cp[0:2] == 'H7':
             continue
-
         pt: geometry.Point = geometry.shape(shape_rec.shape.__geo_interface__)
-        match level:
-            case 'primaire':
-                amenities.setdefault('primary_school', []).append([pt.x, pt.y])
-            case 'secondaire':
-                amenities.setdefault('secondary_school', []).append([pt.x, pt.y])
+
+        level = shape_rec.record.ORDRE_ENS.lower()
+        if 'primaire' in level:
+            amenities.setdefault('primary_school', []).append([pt.x, pt.y])
+        if 'secondaire' in level:
+            amenities.setdefault('secondary_school', []).append([pt.x, pt.y])
 
 from_proj = pyproj.CRS('EPSG:2950')
 to_proj = pyproj.CRS('EPSG:4326')
