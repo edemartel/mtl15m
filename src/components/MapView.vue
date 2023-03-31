@@ -35,8 +35,9 @@ import { LMap, LTileLayer, LGeoJson, LControlAttribution } from '@vue-leaflet/vu
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
-import { AreaProperties, SCORE_INCREMENT } from '../models/area_properties';
+import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
+import { hsvToRgb, toHex } from '../utils/colours';
 
 
 export default defineComponent({
@@ -52,24 +53,23 @@ export default defineComponent({
             default: AmenityType.FoodStore
         }
     },
-    setup(props) {
-        const knownColours = ['Blue', 'Green', 'Yellow', 'Orange', 'Red', 'Black'];
-        
+    setup(props) {        
         function updateAreaColours(layer: L.GeoJSON, amenityType: AmenityType) {
             if (layer.feature) {
                 const feature = layer.feature as Feature;
                 const properties = feature.properties as AreaProperties;
-                const foodDistance = properties.distances[amenityType];
-                let colour = knownColours[knownColours.length - 1];
-                if(foodDistance !== undefined) {
-                    const score = Math.min(Math.floor(foodDistance / SCORE_INCREMENT), knownColours.length - 1);
-                    colour = knownColours[score];
-                }
+                const distance = properties.distances[amenityType];
+                
+                const score = distance !== undefined ? (1 - Math.min(distance / MAX_DISTANCE, 1)) : 0;
+                const colour = hsvToRgb(score / 2, 1, 0.5);
+                const hexColour = toHex(colour);
+
                 layer.setStyle({
                     weight: 1,
                     fillOpacity: 0.7,
-                    fillColor: colour,
-                    stroke: false
+                    fillColor: hexColour,
+                    color: 'black',
+                    opacity: 0.5
                 });
             }else {
                 layer.resetStyle();
