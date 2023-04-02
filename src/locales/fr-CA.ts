@@ -1,6 +1,10 @@
 export default {
     loading: 'Chargement des données...',
-    
+    language_selection: 'Sélection de langue',
+    about: 'À propos',
+    close: 'Fermer',
+    filter_by: 'Afficher par',
+
     // Amenity types
     amenities: 'Services',
     amenity_clinic: 'Clinique',

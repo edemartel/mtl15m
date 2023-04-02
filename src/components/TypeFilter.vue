@@ -1,13 +1,16 @@
 <template>
-  <div class="select-parent">
-    <v-select
-      v-model="currentType"
-      :aria-label="$t('amenities')"
-      :options="allTypes"
-      :clearable="false"
-      :get-option-label="translateAmenityType"
-    >
-    </v-select>
+  <div class="filter-root">
+    <span v-t="'filter_by'"></span>
+    <div class="select-parent">
+      <v-select
+        v-model="currentType"
+        :aria-label="$t('amenities')"
+        :options="allTypes"
+        :clearable="false"
+        :get-option-label="translateAmenityType"
+      >
+      </v-select>
+    </div>
   </div>
 </template>
 
@@ -47,8 +50,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.filter-root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1ch;
+}
+
 .select-parent {
   pointer-events: auto;
+  --vs-font-size: var(--default-font-size);
+  --vs-selected-color: var(--color-text);
+  --vs-border-color: var(--color-border);
+  --vs-dropdown-max-height: 750%;
+  flex: 1;
 }
 </style>
 <style>  /* global */
@@ -59,5 +74,8 @@ export default defineComponent({
 }
 .v-select .vs__dropdown-toggle {
   height: 100%;
+}
+.v-select .vs__dropdown-menu {
+    background-color: var(--color-background);
 }
 </style>

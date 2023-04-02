@@ -11,6 +11,9 @@
     </div>
     <div class="padding"></div>
     <div>
+      <AboutWindow></AboutWindow>
+    </div>
+    <div>
       <LanguageSelector></LanguageSelector>
     </div>
   </header>
@@ -39,9 +42,10 @@ import { useMapStore } from './stores/map';
 import { AmenityType, defaultAmenityType } from './models/amenity_type';
 import TypeFilter from './components/TypeFilter.vue';
 import LanguageSelector from './components/LanguageSelector.vue';
+import AboutWindow from './components/AboutWindow.vue';
 
 export default defineComponent({
-    components: { MapView, LoadingSpinner, TypeFilter, LanguageSelector },
+    components: { MapView, LoadingSpinner, TypeFilter, LanguageSelector, AboutWindow },
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
@@ -81,20 +85,20 @@ main {
 }
 header {
     display: flex;
-    padding: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: var(--sz-10);
+    padding-left: var(--sz-100);
+    padding-right: var(--sz-100);
     align-items: center;
-    gap: 1ch;
+    gap: var(--sz-200);
 }
 .logo {
     display: inline;
     font-size: 24px;
     margin: 0;
-    margin-right: 1ch;
+    margin-right: var(--sz-100);
 }
 .type-filter {
-    min-width: 300px;
+    min-width: 400px;
 }
 .padding {
     flex: 1;

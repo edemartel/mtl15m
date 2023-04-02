@@ -1,6 +1,9 @@
 <template>
-  <div class="language-list">
-    <template
+  <div
+    class="language-list"
+    :aria-label="$t('language_selection')"
+  >
+    <div
       v-for="loc of locales"
       :key="loc.id"
     >
@@ -19,7 +22,7 @@
       >      
         {{ loc.id.substring(0, 2).toLocaleUpperCase() }}
       </label>
-    </template>
+    </div>
   </div>
 </template>
   
@@ -81,16 +84,21 @@ function getDesiredLocale() {
     flex-direction: row;
     gap: 1ch;
 }
-.language-list input {
+input {
     opacity: 0;
     position: absolute;
-}
-
-.language-list label {
     cursor: pointer;
 }
 
-.language-list input:checked+label {
+label {
+    cursor: pointer;
+}
+
+label:hover, input:hover+label {
+    color: var(--color-accent);
+}
+
+input:checked+label {
     font-weight: bold;
 }
 </style>

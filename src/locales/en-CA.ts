@@ -1,5 +1,9 @@
 export default {
     loading: 'Loading data...',
+    language_selection: 'Language Selection',
+    about: 'About',
+    close: 'Close',
+    filter_by: 'Show par',
 
     // Amenity types
     amenities: 'Amenities',

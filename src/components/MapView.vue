@@ -63,15 +63,15 @@ export default defineComponent({
                 const distance = properties.distances[amenityType];
                 
                 const score = distance !== undefined ? (1 - Math.min(distance.dist / MAX_DISTANCE, 1)) : 0;
-                const colour = hsvToRgb(score / 2, 1, 0.5);
+                const colour = hsvToRgb(score / 2, 1, 0.6);
                 const hexColour = toHex(colour);
 
                 layer.setStyle({
                     weight: 1,
-                    fillOpacity: 0.7,
+                    fillOpacity: 0.6,
                     fillColor: hexColour,
-                    color: 'black',
-                    opacity: 0.5
+                    color: 'white',
+                    opacity: 0.4
                 });
             }else {
                 layer.resetStyle();
@@ -176,4 +176,21 @@ export default defineComponent({
 path.leaflet-interactive:focus {
     outline: none;
 }
+.leaflet-tile {
+    filter: hue-rotate(180deg) invert(100%);
+}
+.leaflet-container .leaflet-control-attribution {
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+.leaflet-control a {
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+.leaflet-control a:hover {
+    color: var(--color-accent);
+    background-color: var(--color-background);
+    text-decoration: none;
+}
+
 </style>
