@@ -1,6 +1,7 @@
 <template>
   <header>
     <h1 class="logo">
+      <i class="fa-solid fa-person-walking"></i>
       mtl15m
     </h1>
     <div class="type-filter">

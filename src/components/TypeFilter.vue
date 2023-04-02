@@ -9,6 +9,24 @@
         :clearable="false"
         :get-option-label="translateAmenityType"
       >
+        <template #option="{ label }">
+          <div class="amenity-row">
+            <i
+              class="fa-solid"
+              :class="['fa-' + amenityIconClasses[label as AmenityType]]"
+            ></i>
+            <span v-t="'amenity_' + label"></span>
+          </div>
+        </template>
+        <template #selected-option="{ label }">
+          <div class="amenity-row">
+            <i
+              class="fa-solid"
+              :class="['fa-' + amenityIconClasses[label as AmenityType]]"
+            ></i>
+            <span v-t="'amenity_' + label"></span>
+          </div>
+        </template>
       </v-select>
     </div>
   </div>
@@ -38,7 +56,8 @@ export default defineComponent({
         return { 
             currentType,
             i18n,
-            allTypes: Object.values(AmenityType)
+            allTypes: Object.values(AmenityType),
+            amenityIconClasses
         };
     },
     methods: {
@@ -47,6 +66,20 @@ export default defineComponent({
         }
     }
 });
+
+const amenityIconClasses: { [type in AmenityType]: string } = {
+    [AmenityType.Clinic]: 'house-medical',
+    [AmenityType.Daycare]: 'child-reaching',
+    [AmenityType.FoodStore]: 'carrot',
+    [AmenityType.Library]: 'book',
+    [AmenityType.MetroStation]: 'train-subway',
+    [AmenityType.Park]: 'tree',
+    [AmenityType.Pharmacy]: 'pills',
+    [AmenityType.Restaurant]: 'mug-saucer',
+    [AmenityType.PrimarySchool]: 'school',
+    [AmenityType.SecondarySchool]: 'graduation-cap'
+};
+
 </script>
 
 <style scoped>
@@ -64,6 +97,17 @@ export default defineComponent({
   --vs-border-color: var(--color-border);
   --vs-dropdown-max-height: 750%;
   flex: 1;
+}
+.amenity-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--sz-30);
+}
+
+.amenity-row i {
+  width: var(--sz-100);
+  text-align: center;
 }
 </style>
 <style>  /* global */
