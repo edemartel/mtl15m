@@ -1,6 +1,5 @@
 export default {
     loading: 'Chargement des données...',
-    language_selection: 'Sélection de langue',
     about: 'À propos',
     close: 'Fermer',
 

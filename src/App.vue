@@ -4,19 +4,17 @@
       <i class="fa-solid fa-person-walking"></i>
       mtl15m
     </h1>
-    <div class="type-filter">
+    <div class="type-filter-parent">
       <TypeFilter
+        class="type-filter"
         :selected-type="selectedType"
         @selected-type-changed="onSelectedTypeChanged"
       ></TypeFilter>
     </div>
-    <div class="padding"></div>
     <div>
       <AboutWindow></AboutWindow>
     </div>
-    <div>
-      <LanguageSelector></LanguageSelector>
-    </div>
+    <LanguageSelector></LanguageSelector>
   </header>
   <main>
     <MapView
@@ -87,8 +85,8 @@ main {
 header {
     display: flex;
     padding: var(--sz-10);
-    padding-left: var(--sz-100);
-    padding-right: var(--sz-100);
+    padding-left: var(--sz-200);
+    padding-right: var(--sz-200);
     align-items: center;
     gap: var(--sz-200);
 }
@@ -98,12 +96,14 @@ header {
     margin: 0;
     white-space: nowrap;
 }
+.type-filter-parent {
+  flex: 1;
+}
 .type-filter {
-    min-width: 400px;
+  max-width: 300px;
+  margin-right: var(--sz-30);
 }
-.padding {
-    flex: 1;
-}
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -117,4 +117,17 @@ header {
   justify-content: center;
   align-items: center;
 }
+
+@media only screen and (min-width: 900px) {
+  .type-filter {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .type-filter {
+    max-width: 500px;
+  }
+}
+
 </style>

@@ -169,6 +169,9 @@ export default defineComponent({
 }
 </style>
 <style>
+.leaflet-container {
+    background-color: var(--color-background);
+}
 .leaflet-control-container {
   width: 100%;
   height: 100%;

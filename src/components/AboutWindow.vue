@@ -1,10 +1,11 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <a
-    v-t="'about'"
+    :title="$t('about')"
+    :aria-label="$t('about')"
     href="#"
     @click="openModal"
-  ></a>
+  ><i class="fa-solid fa-circle-question"></i></a>
   <div
     id="modal-container"
     :style="{ display: opened ? 'block' : 'none' }"

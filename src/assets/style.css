@@ -22,6 +22,10 @@
   --sz-900: 32px;
 }
 
+:root {
+  --default-font-size: var(--sz-400);
+}
+
 html {
   height: min(100%, 100vh);
 }
