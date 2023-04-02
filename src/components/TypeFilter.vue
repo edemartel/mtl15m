@@ -1,34 +1,31 @@
 <template>
-  <div class="filter-root">
-    <span v-t="'filter_by'"></span>
-    <div class="select-parent">
-      <v-select
-        v-model="currentType"
-        :aria-label="$t('amenities')"
-        :options="allTypes"
-        :clearable="false"
-        :get-option-label="translateAmenityType"
-      >
-        <template #option="{ label }">
-          <div class="amenity-row">
-            <i
-              class="fa-solid"
-              :class="['fa-' + amenityIconClasses[label as AmenityType]]"
-            ></i>
-            <span v-t="'amenity_' + label"></span>
-          </div>
-        </template>
-        <template #selected-option="{ label }">
-          <div class="amenity-row">
-            <i
-              class="fa-solid"
-              :class="['fa-' + amenityIconClasses[label as AmenityType]]"
-            ></i>
-            <span v-t="'amenity_' + label"></span>
-          </div>
-        </template>
-      </v-select>
-    </div>
+  <div class="select-parent">
+    <v-select
+      v-model="currentType"
+      :aria-label="$t('amenities')"
+      :options="allTypes"
+      :clearable="false"
+      :get-option-label="translateAmenityType"
+    >
+      <template #option="{ label }">
+        <div class="amenity-row">
+          <i
+            class="fa-solid"
+            :class="['fa-' + amenityIconClasses[label as AmenityType]]"
+          ></i>
+          <span v-t="'amenity_' + label"></span>
+        </div>
+      </template>
+      <template #selected-option="{ label }">
+        <div class="amenity-row">
+          <i
+            class="fa-solid"
+            :class="['fa-' + amenityIconClasses[label as AmenityType]]"
+          ></i>
+          <span v-t="'amenity_' + label"></span>
+        </div>
+      </template>
+    </v-select>
   </div>
 </template>
 
@@ -83,13 +80,6 @@ const amenityIconClasses: { [type in AmenityType]: string } = {
 </script>
 
 <style scoped>
-.filter-root {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1ch;
-}
-
 .select-parent {
   pointer-events: auto;
   --vs-font-size: var(--default-font-size);
@@ -102,7 +92,7 @@ const amenityIconClasses: { [type in AmenityType]: string } = {
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  gap: var(--sz-30);
+  gap: var(--sz-100);
 }
 
 .amenity-row i {
@@ -118,6 +108,7 @@ const amenityIconClasses: { [type in AmenityType]: string } = {
 }
 .v-select .vs__dropdown-toggle {
   height: 100%;
+  padding-left: var(--sz-30);
 }
 .v-select .vs__dropdown-menu {
     background-color: var(--color-background);

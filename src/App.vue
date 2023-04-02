@@ -96,7 +96,7 @@ header {
     display: inline;
     font-size: 24px;
     margin: 0;
-    margin-right: var(--sz-100);
+    white-space: nowrap;
 }
 .type-filter {
     min-width: 400px;
