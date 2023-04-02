@@ -1,11 +1,21 @@
 <template>
+  <header>
+    <h1 class="logo">
+      mtl15m
+    </h1>
+    <div class="type-filter">
+      <TypeFilter
+        :selected-type="selectedType"
+        @selected-type-changed="onSelectedTypeChanged"
+      ></TypeFilter>
+    </div>
+    <div class="padding"></div>
+    <div>
+      <LanguageSelector></LanguageSelector>
+    </div>
+  </header>
   <main>
-    <TypeFilter
-      id="filter"
-      @selected-type-changed="onSelectedTypeChanged"
-    ></TypeFilter>
     <MapView
-      id="map"
       :selected-type="selectedType"
     ></MapView>
   </main>
@@ -22,16 +32,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import MapView from './components/MapView.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
-import { useI18n } from 'vue-i18n';
 import { useMapStore } from './stores/map';
-import { AmenityType } from './models/amenity_type';
+import { AmenityType, defaultAmenityType } from './models/amenity_type';
 import TypeFilter from './components/TypeFilter.vue';
+import LanguageSelector from './components/LanguageSelector.vue';
 
 export default defineComponent({
-    components: { MapView, LoadingSpinner, TypeFilter },
+    components: { MapView, LoadingSpinner, TypeFilter, LanguageSelector },
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
@@ -49,26 +59,8 @@ export default defineComponent({
             }
         });
 
-        const i18n = useI18n();
-
-        const locale = computed<string>({
-            get() {
-                return i18n.locale.value;
-            },
-            set(value) {
-                localStorage.setItem('locale', value);
-                i18n.locale.value = value;
-            }
-        });
-
-        const desiredLocale = getDesiredLocale();
-        if (desiredLocale) {
-            i18n.locale.value = desiredLocale;
-        }
-
         return {
-            selectedType: ref(AmenityType.FoodStore),
-            locale,
+            selectedType: ref(defaultAmenityType),
             loadingCompleted
         };
     },
@@ -79,36 +71,33 @@ export default defineComponent({
     }
 });
 
-function getDesiredLocale() {
-    let locale = localStorage.getItem('locale');
-    if (!locale) {
-        for (const language of navigator.languages) {
-            const index = language.indexOf('-');
-            const lang = (index === -1 ? language : language.substring(0, index)).toLowerCase();
-            if (lang === 'fr' || lang === 'en') {
-                locale = `${lang}-CA`;
-                localStorage.setItem('locale', locale);
-                break;
-            }
-        }
-    }
-    return locale;
-}
 </script>
 
 <style scoped>
 main {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 1em;
-}
-#map {
     flex: 1;
 }
-#filter {
-    padding: 0.5em;
+header {
+    display: flex;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    align-items: center;
+    gap: 1ch;
+}
+.logo {
+    display: inline;
+    font-size: 24px;
+    margin: 0;
+    margin-right: 1ch;
+}
+.type-filter {
+    min-width: 300px;
+}
+.padding {
+    flex: 1;
 }
 .loading-overlay {
   position: fixed;

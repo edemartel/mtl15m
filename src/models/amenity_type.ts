@@ -10,3 +10,5 @@ export enum AmenityType {
     Restaurant = 'restaurant',
     SecondarySchool= 'secondary_school'
 }
+
+export const defaultAmenityType = AmenityType.FoodStore;

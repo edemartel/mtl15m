@@ -2,6 +2,7 @@ export default {
     loading: 'Loading data...',
 
     // Amenity types
+    amenities: 'Amenities',
     amenity_clinic: 'Clinic',
     amenity_daycare: 'Daycare',
     amenity_food_store: 'Food Store',

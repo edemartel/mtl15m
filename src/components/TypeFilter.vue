@@ -1,35 +1,28 @@
 <template>
-  <div>
-    <div 
-      v-for="amenityType of allTypes"
-      :key="amenityType"
+  <div class="select-parent">
+    <v-select
+      v-model="currentType"
+      :aria-label="$t('amenities')"
+      :options="allTypes"
+      :clearable="false"
+      :get-option-label="translateAmenityType"
     >
-      <input
-        :id="amenityType + '_radio'"
-        class="amenity-type"
-        type="radio"
-        name="amenity_type"
-        :value="amenityType"
-        :checked="amenityType === currentType"
-        @change="onSelected(amenityType)"
-      >
-      <label
-        v-t="'amenity_' + amenityType"
-        :for="amenityType + '_radio'"
-      >
-      </label>
-    </div>
+    </v-select>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { AmenityType } from '../models/amenity_type';
+import { AmenityType, defaultAmenityType } from '../models/amenity_type';
+import vSelect from 'vue-select';
+import { useI18n } from 'vue-i18n';
+
 export default defineComponent({
+    components: { vSelect },
     props: {
         selectedType: {
             type: String as PropType<AmenityType>,
-            default: AmenityType.FoodStore
+            default: defaultAmenityType
         }
     },
     emits: ['selectedTypeChanged'],
@@ -38,18 +31,33 @@ export default defineComponent({
             get: () => props.selectedType,
             set: (value) => emit('selectedTypeChanged', value)
         });
+        const i18n = useI18n();
         return { 
             currentType,
+            i18n,
             allTypes: Object.values(AmenityType)
         };
     },
     methods: {
-        onSelected(type: AmenityType) {
-            this.currentType = type;
+        translateAmenityType(type: AmenityType) {
+            return this.i18n.t('amenity_' + type);
         }
     }
 });
 </script>
 
 <style scoped>
+.select-parent {
+  pointer-events: auto;
+}
+</style>
+<style>  /* global */
+.v-select .vs__selected-options {
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.v-select .vs__dropdown-toggle {
+  height: 100%;
+}
 </style>

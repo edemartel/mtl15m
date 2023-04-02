@@ -2,6 +2,7 @@ export default {
     loading: 'Chargement des données...',
     
     // Amenity types
+    amenities: 'Services',
     amenity_clinic: 'Clinique',
     amenity_daycare: 'Garderie',
     amenity_food_store: 'Magasin d\'alimentation',
