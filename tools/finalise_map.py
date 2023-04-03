@@ -1,5 +1,7 @@
 import os
 import json
+
+import urllib
 import geojson
 import geojson.mapping
 import geojson.geometry
@@ -26,8 +28,24 @@ class MapPoint:
         self.point_in_metres = ops.transform(project, pt)
 
 def get_real_distance(center: MapPoint, service: MapPoint):
-    # TODO: use OpenRouteService
-    return center.point_in_metres.distance(service.point_in_metres)
+    request = urllib.request.Request('http://localhost:8082/ors/v2/matrix/foot-walking')
+    request.add_header('content-type', 'application/json')
+    data = {
+        'locations': [[center.point_in_degrees.x, center.point_in_degrees.y], [service.point_in_degrees.x, service.point_in_degrees.y]],
+        'units' : 'm',
+        'metrics':['distance']}
+    try:
+        with urllib.request.urlopen(request, data=json.dumps(data).encode('utf-8')) as rawResponse:
+            response = json.load(rawResponse)
+            distance =  response['distances'];
+            if distance is None or distance[0] is None or distance[0][1] is None:
+                return math.inf
+            else :
+                return distance[0][1]
+    except urllib.error.HTTPError as e:
+        return math.inf
+    
+    ##return center.point_in_metres.distance(service.point_in_metres)
 
 with open(os.path.join(generated_path, 'map.json'), 'r', encoding='utf-8') as input_file:
     base_map: geojson.FeatureCollection = geojson.load(input_file)
