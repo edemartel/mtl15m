@@ -1,11 +1,23 @@
-About mtl15m
+**mtl15m** is an interactive map Web application that displays the availability of various amenities within walking distance in the various municipalities of the island of Montreal.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin facilisis scelerisque bibendum. Vivamus et purus sollicitudin, placerat nibh sed, efficitur quam. Mauris ac ex ex. Pellentesque eu finibus turpis. Maecenas bibendum, sapien non malesuada imperdiet, odio nisl interdum elit, id ullamcorper lectus eros vitae libero. Aliquam sed enim in ligula eleifend tempus ut eget odio. Nunc tempus lacus id tortor varius, vel posuere mauris tincidunt. Donec semper fringilla vulputate. Sed semper felis in est blandit, et viverra est viverra. Nunc pretium tincidunt nisi, a ullamcorper felis suscipit quis.
+Its authors are [Andy Emond](https://twitter.com/Drahakar), [Jesse Emond](https://twitter.com/JesseEmond) and [Etienne de Martel](https://twitter.com/edemartel).
 
-Sed dapibus eros et ligula commodo efficitur. Maecenas eu est non metus lobortis sodales a vel ipsum. Sed imperdiet faucibus nisi, ut dignissim tellus elementum eu. Curabitur pretium, odio nec accumsan vestibulum, velit eros pretium lacus, id tincidunt ipsum diam et lacus. Nunc et pulvinar ipsum. Mauris magna quam, lobortis eget tortor quis, dignissim eleifend leo. Aliquam molestie tincidunt mauris, in porttitor quam pellentesque eu. Nulla semper nibh nec feugiat rutrum. Phasellus eleifend eros vitae magna maximus venenatis.
+# Methodology
 
-Donec pharetra, felis viverra commodo aliquet, lorem lorem aliquet arcu, a suscipit dui massa in tortor. Ut malesuada odio leo, nec molestie est sagittis id. Cras semper finibus elit, in pretium orci vehicula eu. Phasellus eu risus auctor, fermentum erat vel, blandit lorem. Quisque accumsan accumsan orci ut commodo. Mauris blandit congue molestie. Phasellus congue neque quis nisi suscipit tincidunt. Nunc posuere erat ac quam commodo pellentesque id sed turpis.
+Montreal was subdivided in areas following the limits of Statistics Canada's dissemination areas, additionally delineated by terrestrial boundaries to cut portions that were over water. Areas with a population of zero in the 2021 census are then eliminated.
 
-Maecenas a arcu scelerisque, pharetra eros quis, aliquam arcu. Donec blandit massa enim, ut cursus turpis rutrum id. Duis tellus ipsum, molestie vitae accumsan non, congue vel felis. Maecenas lacinia metus orci, nec pharetra leo feugiat nec. Proin lorem velit, sollicitudin porta orci sed, varius volutpat metus. Suspendisse faucibus consequat ligula. Aliquam ultricies, nulla ac porttitor pellentesque, quam nibh tincidunt arcu, sit amet accumsan lorem quam nec justo. Suspendisse quis urna varius, iaculis neque et, efficitur sem. Cras neque neque, cursus a feugiat a, posuere eu eros.
+For each area, we only consider amenities within a radius of 2.5 km as the crow flies of its centre. The distance of 2.5 km was chosen because it is 30 minutes at a typical walking speed of 5 km/h. For the remaining amenities, we then compute the walking distance using a local execution of [OpenRouteService](https://openrouteservice.org/). The shortest path for a specific category of amenities is then chosen as the distance between that area and that category.
 
-In efficitur neque neque, nec faucibus nunc tempus sit amet. Mauris varius luctus imperdiet. Aenean egestas mauris est, eget pellentesque neque tempus nec. Fusce velit est, feugiat non malesuada quis, luctus vel leo. Phasellus eget risus efficitur orci vehicula tincidunt. Mauris vel dapibus nibh. Proin hendrerit lobortis libero, eget dapibus leo auctor vel. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Vivamus aliquet aliquam velit, in placerat turpis ultricies sit amet.
+The colour shown on the map is simply calculated based on the ratio between that distance and the maximum chosen distance of 2.5 km.
+
+# Sources
+
+- [2021 Census – Boundary files](https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?Year=21)
+- [Population and dwelling counts - 2021](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810001501&pickMembers%5B0%5D=1.14402)
+- [Limites terrestres de l'île de Montréal](https://donnees.montreal.ca/ville-de-montreal/limites-terrestres)
+- [Établissements alimentaires](https://donnees.montreal.ca/ville-de-montreal/etablissements-alimentaires)
+- [Locaux commericiaux  et statuts d'occupation](https://donnees.montreal.ca/ville-de-montreal/locaux-commerciaux)
+- [Lieux culturels municipaux de Montréal](https://donnees.montreal.ca/ville-de-montreal/lieux-culturels)
+- [Grands parcs, parcs d'arrondissements et espaces publics](https://donnees.montreal.ca/ville-de-montreal/grands-parcs-parcs-d-arrondissements-et-espaces-publics)
+- [Localisation des établissements d'enseignement du réseau scolaire au Québec](https://www.donneesquebec.ca/recherche/dataset/localisation-des-etablissements-d-enseignement-du-reseau-scolaire-au-quebec)
+- [Tracés des lignes de bus et de métro](https://donnees.montreal.ca/societe-de-transport-de-montreal/stm-traces-des-lignes-de-bus-et-de-metro)

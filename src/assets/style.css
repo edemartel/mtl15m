@@ -3,12 +3,13 @@
   --color-accent: #FF785A;
   --color-border: #393939;
   --color-text: #eeeeee;
-  
+  --color-text-dark: #bbbbbb;
+
   --ff-primary: 'Rubik';
   --fw-regular: 500;
 }
 
-:root {  
+:root {
   --sz-10: 4px;
   --sz-30: 6px;
   --sz-50: 7px;
@@ -54,14 +55,13 @@ body {
 }
 
 a {
-  color: var(--color-text);
+  color: var(--color-accent);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-accent);
+  color: var(--color-text-dark);
 }
-
 
 @media only screen and (max-width: 599px) {
   :root {

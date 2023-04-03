@@ -17,10 +17,10 @@
         @click="ev => ev.stopPropagation()"
       >
         <div id="modal-header">
-          <div
+          <h1
             id="header"
             v-t="'about'"
-          ></div>
+          ></h1>
           <a
             id="close-button"
             role="button"
@@ -155,20 +155,17 @@ export default defineComponent({
     justify-content: space-between;
 }
 
+#header {
+    font-size: var(--sz-600);
+    margin: 0;
+}
+
 #modal-content {
     padding-right: var(--sz-300);
     padding-right: var(--sz-300);
     overflow-y: auto;
     overflow-x: hidden;
 }
-
-#header {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-size: var(--sz-400);
-}
-
 
 #body-container {
     padding-top: var(--sz-30);
@@ -183,6 +180,7 @@ export default defineComponent({
     padding-right: var(--sz-100);
     line-height: 1.5em;
     color: var(--clr-gris-moyen);
+    font-size: var(--sz-100);
     
     overflow-y: auto;
     overflow-x: hidden;
@@ -198,17 +196,25 @@ export default defineComponent({
     margin-bottom: 0;
 }
 #body-content :deep(a) {
-    font-size: var(--sz-100);
-    color: var(--clr-orange);
+    color: var(--color-accent);
 }
 
 #body-content :deep(a:hover) {
-    color: var(--clr-gris-pale);
+    color: var(--color-text-dark);
 }
 
 #body-content :deep(strong) {
     font-weight: var(--fw-regular);
-    color: var(--clr-gris-fonce);
+    color: var(--color-text-dark);
+}
+
+#body-content :deep(h1) {
+    font-size: var(--sz-200);
+}
+
+#body-content :deep(ul) {
+    padding: 0;
+    padding-left: var(--sz-300);;
 }
 </style>
 
