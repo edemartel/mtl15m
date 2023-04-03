@@ -2,6 +2,7 @@ export default {
     loading: 'Chargement des données...',
     about: 'À propos',
     close: 'Fermer',
+    logo: 'Logo',
 
     // Amenity types
     amenities: 'Services',
