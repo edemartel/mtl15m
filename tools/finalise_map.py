@@ -28,20 +28,16 @@ class MapPoint:
         self.point_in_metres = ops.transform(project, pt)
 
 def get_real_distance(center: MapPoint, service: MapPoint):
-    request = urllib.request.Request('http://localhost:8082/ors/v2/matrix/foot-walking')
+    request = urllib.request.Request(f'http://localhost:8082/ors/v2/directions/foot-walking?start={center.point_in_degrees.x},{center.point_in_degrees.y}&end={service.point_in_degrees.x},{service.point_in_degrees.y}')
     request.add_header('content-type', 'application/json')
-    data = {
-        'locations': [[center.point_in_degrees.x, center.point_in_degrees.y], [service.point_in_degrees.x, service.point_in_degrees.y]],
-        'units' : 'm',
-        'metrics':['distance']}
     try:
-        with urllib.request.urlopen(request, data=json.dumps(data).encode('utf-8')) as rawResponse:
+        with urllib.request.urlopen(request) as rawResponse:
             response = json.load(rawResponse)
-            distance =  response['distances'];
-            if distance is None or distance[0] is None or distance[0][1] is None:
+            summary =  response['features'][0]['properties']['summary']
+            if 'distance' not in summary:
                 return math.inf
             else :
-                return distance[0][1]
+                return summary['distance']
     except urllib.error.HTTPError as e:
         return math.inf
     
