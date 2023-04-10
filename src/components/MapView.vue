@@ -192,9 +192,6 @@ export default defineComponent({
 path.leaflet-interactive:focus {
     outline: none;
 }
-.leaflet-tile {
-    filter: hue-rotate(180deg) invert(100%);
-}
 .leaflet-container .leaflet-control-attribution {
     color: var(--color-text);
     background-color: var(--color-background);

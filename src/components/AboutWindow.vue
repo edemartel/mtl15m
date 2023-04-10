@@ -202,11 +202,10 @@ export default defineComponent({
 }
 
 #body-content :deep(a:hover) {
-    color: var(--color-text-dark);
+    color: var(--color-accent-light);
 }
 
 #body-content :deep(strong) {
-    font-weight: var(--fw-regular);
     color: var(--color-text-dark);
 }
 

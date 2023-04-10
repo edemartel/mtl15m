@@ -1,12 +1,13 @@
 :root {
-  --color-background: #191919;
-  --color-accent: #FF785A;
+  --color-background: #eeeeee;
+  --color-accent: #cc3f20;
+  --color-accent-light: #ec6547;
   --color-border: #393939;
-  --color-text: #eeeeee;
-  --color-text-dark: #bbbbbb;
-  --color-highlight: #444444;
+  --color-text: #222222;
+  --color-text-strong: #333333;
+  --color-highlight: #666666;
 
-  --color-map-area-border: rgba(255, 255, 255, 0.3);
+  --color-map-area-border: rgba(0, 0, 0, 0.3);
 
   --ff-primary: 'Rubik';
   --fw-regular: 500;
@@ -82,7 +83,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-text-dark);
+  color: var(--color-accent-light);
 }
 
 @media only screen and (max-width: 599px) {
