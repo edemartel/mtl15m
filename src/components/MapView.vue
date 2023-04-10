@@ -33,7 +33,7 @@
 import 'leaflet/dist/leaflet.css';
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution } from '@vue-leaflet/vue-leaflet';
-import L, { LatLng, LayerGroup } from 'leaflet';
+import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
@@ -160,6 +160,16 @@ export default defineComponent({
     unmounted() {
         if(this.mapOwner) {
             this.resizeObserver.unobserve(this.mapOwner);
+        }
+    },
+    methods: {
+        panTo(pos: L.LatLngExpression) {
+            if(this.map?.leafletObject) {
+                this.map.leafletObject.flyTo(pos, 14, {
+                    animate: true,
+                    duration: 0.5
+                });
+            }
         }
     }
 });

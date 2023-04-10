@@ -14,13 +14,13 @@
         @selected-type-changed="onSelectedTypeChanged"
       ></TypeFilter>
     </div>
-    <div>
-      <AboutWindow></AboutWindow>
-    </div>
+    <LocationPicker @location-provided="onLocationProvided"></LocationPicker>
+    <AboutWindow></AboutWindow>
     <LanguageSelector></LanguageSelector>
   </header>
   <main>
     <MapView
+      ref="map"
       :selected-type="selectedType"
     ></MapView>
   </main>
@@ -45,9 +45,18 @@ import { AmenityType, defaultAmenityType } from './models/amenity_type';
 import TypeFilter from './components/TypeFilter.vue';
 import LanguageSelector from './components/LanguageSelector.vue';
 import AboutWindow from './components/AboutWindow.vue';
+import LocationPicker from './components/LocationPicker.vue';
+import { LatLngExpression } from 'leaflet';
 
 export default defineComponent({
-    components: { MapView, LoadingSpinner, TypeFilter, LanguageSelector, AboutWindow },
+    components: { 
+        MapView, 
+        LoadingSpinner, 
+        TypeFilter, 
+        LanguageSelector, 
+        AboutWindow,
+        LocationPicker
+    },
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
@@ -67,12 +76,18 @@ export default defineComponent({
 
         return {
             selectedType: ref(defaultAmenityType),
+            map: ref<InstanceType<typeof MapView> | null>(null),
             loadingCompleted
         };
     },
     methods: {
         onSelectedTypeChanged(type: AmenityType) {
             this.selectedType = type;
+        },
+        onLocationProvided(pos: LatLngExpression) {
+            if (this.map) {
+                this.map.panTo(pos);
+            }
         }
     }
 });
@@ -92,6 +107,7 @@ header {
     padding-right: var(--sz-200);
     align-items: center;
     gap: var(--sz-200);
+    border-bottom: 1px solid var(--color-border);
 }
 .logo {
     display: inline;

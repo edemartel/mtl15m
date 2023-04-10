@@ -3,6 +3,7 @@ export default {
     about: 'À propos',
     close: 'Fermer',
     logo: 'Logo',
+    go_to_position: 'Allez à votre position',
 
     // Amenity types
     amenities: 'Services',

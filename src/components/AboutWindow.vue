@@ -1,41 +1,43 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-  <a
-    :title="$t('about')"
-    :aria-label="$t('about')"
-    href="#"
-    @click="openModal"
-  ><i class="fa-solid fa-circle-question"></i></a>
-  <div
-    id="modal-container"
-    :style="{ display: opened ? 'block' : 'none' }"
-    @click="closeModal"
-  >
-    <div id="modal-wrapper">
-      <div
-        id="modal"
-        @click="ev => ev.stopPropagation()"
-      >
-        <div id="modal-header">
-          <h1
-            id="header"
-            v-t="'about'"
-          ></h1>
-          <a
-            id="close-button"
-            role="button"
-            :aria-label="$t('close')"
-            @click="closeModal"
-          >
-            &#10006;
-          </a>
-        </div>
-        <div id="modal-content">
-          <div id="body-container">
-            <div
-              id="body-content"
-              v-html="body"
-            ></div>
+  <div>
+    <a
+      :title="$t('about')"
+      :aria-label="$t('about')"
+      href="#"
+      @click="openModal"
+    ><i class="fa-solid fa-circle-question"></i></a>
+    <div
+      id="modal-container"
+      :style="{ display: opened ? 'block' : 'none' }"
+      @click="closeModal"
+    >
+      <div id="modal-wrapper">
+        <div
+          id="modal"
+          @click="ev => ev.stopPropagation()"
+        >
+          <div id="modal-header">
+            <h1
+              id="header"
+              v-t="'about'"
+            ></h1>
+            <a
+              id="close-button"
+              role="button"
+              :aria-label="$t('close')"
+              @click="closeModal"
+            >
+              &#10006;
+            </a>
+          </div>
+          <div id="modal-content">
+            <div id="body-container">
+              <div
+                id="body-content"
+                v-html="body"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
