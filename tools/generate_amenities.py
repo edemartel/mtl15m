@@ -39,8 +39,8 @@ with open(os.path.join(source_path, 'amenities', 'occupation-commerciale-2022.cs
                 category = 'daycare'
 
         if category:
-            pt = [float(LONG), float(LAT)]
-            amenities.setdefault(category, []).append(pt)
+            pt = geometry.Point(float(LONG), float(LAT))
+            amenities.setdefault(category, set()).add(pt)
 
 
 with open(os.path.join(source_path, 'amenities', 'lieuxculturels.csv'), 'r', encoding='utf-8', newline='') as data_file:
@@ -51,20 +51,8 @@ with open(os.path.join(source_path, 'amenities', 'lieuxculturels.csv'), 'r', enc
         _, NomReseau, _, _, _, _, _, _, _, Longitude, Latitude, _ = row
 
         if NomReseau.lower() == 'bibliothèque':
-            pt = [float(Longitude), float(Latitude)]
-            amenities.setdefault('library', []).append(pt)
-
-
-def get_all_exterior_points(polygon):
-    result = []
-    if polygon.geom_type == 'Polygon':
-        return polygon.exterior.coords
-    elif polygon.geom_type == 'MultiPolygon':
-        result = []
-        for part in polygon.geoms:
-            result.extend(get_all_exterior_points(part))
-        return result
-
+            pt = geometry.Point(float(Longitude), float(Latitude))
+            amenities.setdefault('library', set()).add(pt)
 
 with open(os.path.join(source_path, 'amenities', 'espace_vert.json'), 'r', encoding='utf-8', newline='') as data_file:
     parks: geojson.FeatureCollection = geojson.load(data_file)
@@ -72,9 +60,9 @@ with open(os.path.join(source_path, 'amenities', 'espace_vert.json'), 'r', encod
     for feature in parks.features:
         park_type = feature.properties['TYPO1']
         if park_type and park_type.lower().startswith('parc'):
-            polygon = geometry.shape(feature.geometry).simplify(0.0001)
-            points = set(get_all_exterior_points(polygon))
-            amenities.setdefault('park', []).extend(points)
+            polygon = geometry.shape(feature.geometry)
+            pt = geometry.Point(polygon.centroid.x, polygon.centroid.y)
+            amenities.setdefault('park', set()).add(pt)
 
 
 with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq-mes-esrishp.zip/PPS_Public_Ecole.shp'), encoding='latin1') as reader:
@@ -86,9 +74,9 @@ with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq
 
         level = shape_rec.record.ORDRE_ENS.lower()
         if 'primaire' in level:
-            amenities.setdefault('primary_school', []).append([pt.x, pt.y])
+            amenities.setdefault('primary_school', set()).add(pt)
         if 'secondaire' in level:
-            amenities.setdefault('secondary_school', []).append([pt.x, pt.y])
+            amenities.setdefault('secondary_school', set()).add(pt)
 
 from_proj = pyproj.CRS('EPSG:2950')
 to_proj = pyproj.CRS('EPSG:4326')
@@ -111,9 +99,10 @@ with shapefile.Reader(os.path.join(source_path, 'amenities', 'stm_sig.zip/stm_ar
 
         pt: geometry.Point = geometry.shape(shape_rec.shape.__geo_interface__)
         pt = ops.transform(project, pt)
-        amenities.setdefault('metro_station', []).append([pt.x, pt.y])
+        amenities.setdefault('metro_station', set()).add(pt)
 
 os.makedirs(os.path.join(generated_path, 'amenities'), exist_ok=True)
-for type, items in amenities.items():
+for type, points in amenities.items():
+    data = [(pt.x, pt.y) for pt in points]
     with open(os.path.join(generated_path, 'amenities', '{}.json'.format(type)), 'w', encoding='utf-8') as output_file:
-        json.dump(items, output_file)
+        json.dump(data, output_file)
