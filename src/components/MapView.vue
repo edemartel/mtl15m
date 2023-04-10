@@ -40,6 +40,12 @@ import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
 import { hsvToRgb, toHex } from '../utils/colours';
 
+const areaStyle: L.PathOptions = {
+    weight: 1,
+    fillOpacity: 0.6,
+    color: 'var(--color-map-area-border)',
+    opacity: 1
+};
 
 export default defineComponent({
     components: {
@@ -67,11 +73,8 @@ export default defineComponent({
                 const hexColour = toHex(colour);
 
                 layer.setStyle({
-                    weight: 1,
-                    fillOpacity: 0.6,
+                    ...areaStyle,
                     fillColor: hexColour,
-                    color: 'white',
-                    opacity: 0.4
                 });
             }else {
                 layer.resetStyle();

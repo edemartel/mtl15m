@@ -103,7 +103,7 @@ header {
   flex: 1;
 }
 .type-filter {
-  max-width: 300px;
+  max-width: 200px;
   margin-right: var(--sz-30);
 }
 
@@ -121,15 +121,21 @@ header {
   align-items: center;
 }
 
+@media only screen and (min-width: 600px) {
+  .type-filter {
+    max-width: 250px;
+  }
+}
+
 @media only screen and (min-width: 900px) {
   .type-filter {
-    max-width: 400px;
+    max-width: 300px;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .type-filter {
-    max-width: 500px;
+    max-width: 400px;
   }
 }
 

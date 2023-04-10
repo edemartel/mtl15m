@@ -113,4 +113,7 @@ const amenityIconClasses: { [type in AmenityType]: string } = {
 .v-select .vs__dropdown-menu {
     background-color: var(--color-background);
 }
+.v-select .vs__dropdown-option--highlight {
+  background-color: var(--color-highlight);
+}
 </style>
