@@ -1,5 +1,8 @@
 <template>
-  <div class="select-parent">
+  <div
+    class="select-parent"
+    :title="$t('filter_by_type')"
+  >
     <v-select
       v-model="currentType"
       :aria-label="$t('amenities')"
@@ -24,6 +27,9 @@
           ></i>
           <span v-t="'amenity_' + label"></span>
         </div>
+      </template>
+      <template #no-options>
+        <span></span>
       </template>
     </v-select>
   </div>

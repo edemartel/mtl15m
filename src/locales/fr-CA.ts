@@ -4,6 +4,7 @@ export default {
     close: 'Fermer',
     logo: 'Logo',
     go_to_position: 'Allez à votre position',
+    filter_by_type: 'Afficher l\'accessibilité pour ce service',
 
     // Amenity types
     amenities: 'Services',
