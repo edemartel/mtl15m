@@ -2,6 +2,8 @@
 
 Its authors are [Andy Emond](https://twitter.com/Drahakar), [Jesse Emond](https://twitter.com/JesseEmond) and [Etienne de Martel](https://twitter.com/edemartel).
 
+The source code is available on [GitHub](https://github.com/edemartel/mtl15m/).
+
 # Methodology
 
 Montreal was subdivided in areas following the limits of Statistics Canada's dissemination areas, additionally delineated by terrestrial boundaries to cut portions that were over water. Areas with a population of zero in the 2021 census are then eliminated.
@@ -9,8 +11,6 @@ Montreal was subdivided in areas following the limits of Statistics Canada's dis
 For each area, we only consider amenities within a radius of 2.5 km as the crow flies of its centre. The distance of 2.5 km was chosen because it is 30 minutes at a typical walking speed of 5 km/h. For the remaining amenities, we then compute the walking distance using a local execution of [OpenRouteService](https://openrouteservice.org/). The shortest path for a specific category of amenities is then chosen as the distance between that area and that category.
 
 The colour shown on the map is simply calculated based on the ratio between that distance and the maximum chosen distance of 2.5 km. The data is then displayed over a map with tiles provided by [the OpenStreetMap project](https://www.openstreetmap.org/).
-
-The source code is available on [GitHub](https://github.com/edemartel/mtl15m/).
 
 # Sources
 

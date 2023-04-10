@@ -2,6 +2,8 @@
 
 Ses auteurs sont [Andy Emond](https://twitter.com/Drahakar), [Jesse Emond](https://twitter.com/JesseEmond) et [Etienne de Martel](https://twitter.com/edemartel).
 
+Le code source est disponible sur [GitHub](https://github.com/edemartel/mtl15m/).
+
 # Méthodologie
 
 Montréal a été subdivisée en secteurs en suivant les frontières des aires de diffusion de Statistiques Canada, additionnellement délimitées par les frontières terrestres pour couper les portions au dessus de l'eau. Les aires avec une population de zéro au recensement de 2021 ont été éliminées.
@@ -9,8 +11,6 @@ Montréal a été subdivisée en secteurs en suivant les frontières des aires d
 Pour chaque secteur, on ne considère que les services dans un rayon de 2,5 km de son centre, à vol d'oiseau. La distance de 2,5 km a été choisie car elle constitue 30 minutes à une vitesse de marche typique de 5 km/h. Pour les services restants, on calcule alors la distance de marche en utilisant une exécution locale de [OpenRouteService](https://openrouteservice.org/). Le chemin le plus court pour une catégorie de service est retenu comme la distance entre ce secteur et cette catégorie de service.
 
 La couleur affichée sur la carte est calculée simplement en fonction du ratio entre cette distance et la distance maximale choisie de 2,5 km. Les données sont alors affichées sur une carte avec des tuiles fournies par [le projet OpenStreetMap](https://www.openstreetmap.org/).
-
-Le code source est disponible sur [GitHub](https://github.com/edemartel/mtl15m/).
 
 # Sources
 
