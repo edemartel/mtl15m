@@ -10,26 +10,6 @@ import pyproj
 
 amenities = {}
 
-with open(os.path.join(source_path, 'amenities', 'businesses.csv'), 'r', encoding='utf-8', newline='') as data_file:
-    reader = csv.reader(data_file)
-    next(reader, None)
-
-    for row in reader:
-        _, _, _, _, _, type, statut, _, latitude, longitude, _, _ = row
-        if statut.lower() != 'ouvert' or not latitude or not longitude:
-            continue
-
-        category = None
-        type = type.lower()
-        if type.startswith('restaurant') or type == 'casse-croûte':
-            category = 'restaurant'
-        elif 'épicerie' in type or type == 'supermarché':
-            category = 'food_store'
-
-        if category:
-            pt = [float(longitude), float(latitude)]
-            amenities.setdefault(category, []).append(pt)
-
 with open(os.path.join(source_path, 'amenities', 'occupation-commerciale-2022.csv'), 'r', encoding='utf-8', newline='') as data_file:
     reader = csv.reader(data_file)
     next(reader, None)
@@ -41,14 +21,21 @@ with open(os.path.join(source_path, 'amenities', 'occupation-commerciale-2022.cs
 
         category = None
 
+        ID_USAGE2 = int(ID_USAGE2)
+        ID_USAGE3 = int(ID_USAGE3)
+
         # For list of known usages, see https://data.montreal.ca/dataset/f8582c4d-a933-4306-bb27-d883e13dd207/resource/bb891287-3690-4a5a-9641-09cea02a8cc7/download/usages.csv
         if ID_USAGE1 == 'A':
-            if ID_USAGE2 == '41' and ID_USAGE3 == '103':
+            if ID_USAGE2 == 41 and ID_USAGE3 == 103:
                 category = 'pharmacy'
+            if ID_USAGE2 == 4 and ID_USAGE3 in [59, 69, 136]:
+                category = 'food_store'
+        if ID_USAGE1 == 'D' and ID_USAGE2 == 49 and ID_USAGE3 in [31, 120]:
+            category = 'restaurant'
         if ID_USAGE1 == 'F':
-            if ID_USAGE2 == '46' and ID_USAGE3 == '40':
+            if ID_USAGE2 == 46 and ID_USAGE3 == 40:
                 category = 'clinic'
-            elif ID_USAGE2 == '17' and ID_USAGE3 == '37':
+            elif ID_USAGE2 == 17 and ID_USAGE3 == 37:
                 category = 'daycare'
 
         if category:
@@ -67,6 +54,7 @@ with open(os.path.join(source_path, 'amenities', 'lieuxculturels.csv'), 'r', enc
             pt = [float(Longitude), float(Latitude)]
             amenities.setdefault('library', []).append(pt)
 
+
 def get_all_exterior_points(polygon):
     result = []
     if polygon.geom_type == 'Polygon':
@@ -76,6 +64,7 @@ def get_all_exterior_points(polygon):
         for part in polygon.geoms:
             result.extend(get_all_exterior_points(part))
         return result
+
 
 with open(os.path.join(source_path, 'amenities', 'espace_vert.json'), 'r', encoding='utf-8', newline='') as data_file:
     parks: geojson.FeatureCollection = geojson.load(data_file)

@@ -8,8 +8,6 @@
         "https://data.montreal.ca/dataset/b628f1da-9dc3-4bb1-9875-1470f891afb1/resource/92cb062a-11be-4222-9ea5-867e7e64c5ff/download/limites-terrestres.geojson"
     ],
     "amenities": [
-        // Établissements alimentaires
-        "https://data.montreal.ca/dataset/c1d65779-d3cb-44e8-af0a-b9f2c5f7766d/resource/28a4957d-732e-48f9-8adb-0624867d9bb0/download/businesses.csv",
         // Locaux commerciaux
         "https://data.montreal.ca/dataset/f8582c4d-a933-4306-bb27-d883e13dd207/resource/2f8d12aa-f338-4a4f-a516-3438142074a9/download/occupation-commerciale-2022.csv",
         // Lieux culturels
