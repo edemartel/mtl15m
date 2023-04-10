@@ -4,7 +4,7 @@ import { AmenityType } from './amenity_type';
 export const MAX_DISTANCE = 2500;
 
 export type ServiceDistances = {
-    [type in AmenityType]: number | undefined;
+    [type in AmenityType]: { pt: Point, dist: number } | undefined;
 };
 
 export interface AreaProperties {
