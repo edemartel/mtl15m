@@ -1,6 +1,6 @@
 **mtl15m** is an interactive map Web application that displays the availability of various amenities within walking distance in the various municipalities of the island of Montreal.
 
-Its authors are [Andy Emond](https://twitter.com/Drahakar), [Jesse Emond](https://twitter.com/JesseEmond) and [Etienne de Martel](https://twitter.com/edemartel).
+Its authors are [Etienne de Martel](https://twitter.com/edemartel), [Andy Emond](https://twitter.com/Drahakar) and [Jesse Emond](https://twitter.com/JesseEmond).
 
 The source code is available on [GitHub](https://github.com/edemartel/mtl15m/).
 

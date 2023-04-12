@@ -1,6 +1,6 @@
 **mtl15m** est une application Web de carte intéractive qui affiche la disponibilité de différents services à distance de marche dans les différentes municipalitées de l'île de Montréal.
 
-Ses auteurs sont [Andy Emond](https://twitter.com/Drahakar), [Jesse Emond](https://twitter.com/JesseEmond) et [Etienne de Martel](https://twitter.com/edemartel).
+Ses auteurs sont [Etienne de Martel](https://twitter.com/edemartel), [Andy Emond](https://twitter.com/Drahakar) et [Jesse Emond](https://twitter.com/JesseEmond).
 
 Le code source est disponible sur [GitHub](https://github.com/edemartel/mtl15m/).
 
