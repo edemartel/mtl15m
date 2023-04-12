@@ -19,6 +19,7 @@
         :geojson="mapStore.features"
         :options="geoJsonOptions"
       ></l-geo-json>
+      <l-layer-group ref="markers"></l-layer-group>
       <l-control-attribution
         prefix=""
         position="bottomright"
@@ -31,8 +32,8 @@
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
 import { defineComponent, PropType, ref, watch } from 'vue';
-import { LMap, LTileLayer, LGeoJson, LControlAttribution } from '@vue-leaflet/vue-leaflet';
-import L from 'leaflet';
+import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution } from '@vue-leaflet/vue-leaflet';
+import L, { LatLng, LayerGroup } from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
@@ -45,6 +46,7 @@ export default defineComponent({
         LMap,
         LTileLayer,
         LGeoJson,
+        LLayerGroup,
         LControlAttribution
     },
     props: {
@@ -60,7 +62,7 @@ export default defineComponent({
                 const properties = feature.properties as AreaProperties;
                 const distance = properties.distances[amenityType];
                 
-                const score = distance !== undefined ? (1 - Math.min(distance / MAX_DISTANCE, 1)) : 0;
+                const score = distance !== undefined ? (1 - Math.min(distance.dist / MAX_DISTANCE, 1)) : 0;
                 const colour = hsvToRgb(score / 2, 1, 0.5);
                 const hexColour = toHex(colour);
 
@@ -77,6 +79,30 @@ export default defineComponent({
         }
         
         const mapLayer = ref<InstanceType<typeof LGeoJson> | null>(null);
+        const markers = ref<InstanceType<typeof LLayerGroup> | null>(null);
+
+        const selectedArea = ref<Feature | null>(null);
+
+        watch(selectedArea, current => {
+            updateBestAmenity(current, props.selectedType);
+        });
+
+        function updateBestAmenity(feature: Feature | null, type: AmenityType) {
+            if(markers.value?.leafletObject) {
+                markers.value.leafletObject.clearLayers();
+                if(feature) {
+                    const properties = feature.properties as AreaProperties;
+                    const distances = properties.distances[type];
+                    if(distances) {
+                        const marker = L.marker({
+                            lng: distances.pt.coordinates[0],
+                            lat: distances.pt.coordinates[1]
+                        });
+                        markers.value.leafletObject.addLayer(marker);
+                    }
+                }
+            }
+        }
 
         const geoJsonOptions: L.GeoJSONOptions = {
             onEachFeature(feature: Feature, layer: L.GeoJSON) {
@@ -84,14 +110,20 @@ export default defineComponent({
                     layer.bindTooltip(feature.id as string);
                 }
                 updateAreaColours(layer, props.selectedType);
+                layer.addEventListener('click', () => {
+                    selectedArea.value = feature;
+                });
             }
         };
 
         watch(() => props.selectedType, (type, oldType) => {
-            if (type !== oldType && mapLayer.value?.leafletObject) {
-                mapLayer.value.leafletObject.eachLayer(layer => {
-                    updateAreaColours(layer as L.GeoJSON, type);
-                });
+            if (type !== oldType) {
+                if (mapLayer.value?.leafletObject) {
+                    mapLayer.value.leafletObject.eachLayer(layer => {
+                        updateAreaColours(layer as L.GeoJSON, type);
+                    });
+                }
+                updateBestAmenity(selectedArea.value, type);
             }
         });
 
@@ -112,7 +144,9 @@ export default defineComponent({
             map,
             mapLayer,
             mapOwner: ref<HTMLDivElement | null>(null),
-            resizeObserver
+            resizeObserver,
+            selectedArea,
+            markers
         };
     },
     mounted() {
