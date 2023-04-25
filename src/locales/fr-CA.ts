@@ -1,7 +1,13 @@
 export default {
     loading: 'Chargement des données...',
-    
+    about: 'À propos',
+    close: 'Fermer',
+    logo: 'Logo',
+    go_to_position: 'Allez à votre position',
+    filter_by_type: 'Afficher l\'accessibilité pour ce service',
+
     // Amenity types
+    amenities: 'Services',
     amenity_clinic: 'Clinique',
     amenity_daycare: 'Garderie',
     amenity_food_store: 'Magasin d\'alimentation',

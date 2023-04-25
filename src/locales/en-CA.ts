@@ -1,7 +1,13 @@
 export default {
     loading: 'Loading data...',
+    about: 'About',
+    close: 'Close',
+    logo: 'Logo',
+    go_to_position: 'Go to your position',
+    filter_by_type: 'Show accessibility for this amenity',
 
     // Amenity types
+    amenities: 'Amenities',
     amenity_clinic: 'Clinic',
     amenity_daycare: 'Daycare',
     amenity_food_store: 'Food Store',

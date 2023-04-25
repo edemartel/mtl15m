@@ -33,13 +33,19 @@
 import 'leaflet/dist/leaflet.css';
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution } from '@vue-leaflet/vue-leaflet';
-import L, { LatLng, LayerGroup } from 'leaflet';
+import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
 import { hsvToRgb, toHex } from '../utils/colours';
 
+const areaStyle: L.PathOptions = {
+    weight: 1,
+    fillOpacity: 0.6,
+    color: 'var(--color-map-area-border)',
+    opacity: 1
+};
 
 export default defineComponent({
     components: {
@@ -63,15 +69,12 @@ export default defineComponent({
                 const distance = properties.distances[amenityType];
                 
                 const score = distance !== undefined ? (1 - Math.min(distance.dist / MAX_DISTANCE, 1)) : 0;
-                const colour = hsvToRgb(score / 2, 1, 0.5);
+                const colour = hsvToRgb(score / 2, 1, 0.6);
                 const hexColour = toHex(colour);
 
                 layer.setStyle({
-                    weight: 1,
-                    fillOpacity: 0.7,
+                    ...areaStyle,
                     fillColor: hexColour,
-                    color: 'black',
-                    opacity: 0.5
                 });
             }else {
                 layer.resetStyle();
@@ -158,6 +161,16 @@ export default defineComponent({
         if(this.mapOwner) {
             this.resizeObserver.unobserve(this.mapOwner);
         }
+    },
+    methods: {
+        panTo(pos: L.LatLngExpression) {
+            if(this.map?.leafletObject) {
+                this.map.leafletObject.flyTo(pos, 14, {
+                    animate: true,
+                    duration: 0.5
+                });
+            }
+        }
     }
 });
 
@@ -169,6 +182,9 @@ export default defineComponent({
 }
 </style>
 <style>
+.leaflet-container {
+    background-color: var(--color-background);
+}
 .leaflet-control-container {
   width: 100%;
   height: 100%;
@@ -176,4 +192,18 @@ export default defineComponent({
 path.leaflet-interactive:focus {
     outline: none;
 }
+.leaflet-container .leaflet-control-attribution {
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+.leaflet-control a {
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+.leaflet-control a:hover {
+    color: var(--color-accent);
+    background-color: var(--color-background);
+    text-decoration: none;
+}
+
 </style>

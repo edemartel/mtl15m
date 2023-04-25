@@ -6,7 +6,9 @@ export enum AmenityType {
     MetroStation = 'metro_station',
     Park = 'park',
     Pharmacy = 'pharmacy',
-    PrimarySchool = 'primary_school',
     Restaurant = 'restaurant',
+    PrimarySchool = 'primary_school',
     SecondarySchool= 'secondary_school'
 }
+
+export const defaultAmenityType = AmenityType.FoodStore;

@@ -1,11 +1,26 @@
 <template>
+  <header>
+    <h1
+      class="logo"
+      :aria-label="$t('logo')"
+    >
+      <i class="fa-solid fa-person-walking"></i>
+      mtl15m
+    </h1>
+    <div class="type-filter-parent">
+      <TypeFilter
+        class="type-filter"
+        :selected-type="selectedType"
+        @selected-type-changed="onSelectedTypeChanged"
+      ></TypeFilter>
+    </div>
+    <LocationPicker @location-provided="onLocationProvided"></LocationPicker>
+    <AboutWindow></AboutWindow>
+    <LanguageSelector></LanguageSelector>
+  </header>
   <main>
-    <TypeFilter
-      id="filter"
-      @selected-type-changed="onSelectedTypeChanged"
-    ></TypeFilter>
     <MapView
-      id="map"
+      ref="map"
       :selected-type="selectedType"
     ></MapView>
   </main>
@@ -22,16 +37,26 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import MapView from './components/MapView.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
-import { useI18n } from 'vue-i18n';
 import { useMapStore } from './stores/map';
-import { AmenityType } from './models/amenity_type';
+import { AmenityType, defaultAmenityType } from './models/amenity_type';
 import TypeFilter from './components/TypeFilter.vue';
+import LanguageSelector from './components/LanguageSelector.vue';
+import AboutWindow from './components/AboutWindow.vue';
+import LocationPicker from './components/LocationPicker.vue';
+import { LatLngExpression } from 'leaflet';
 
 export default defineComponent({
-    components: { MapView, LoadingSpinner, TypeFilter },
+    components: { 
+        MapView, 
+        LoadingSpinner, 
+        TypeFilter, 
+        LanguageSelector, 
+        AboutWindow,
+        LocationPicker
+    },
     setup() {
         const loadingCompleted = ref<boolean>(false);
 
@@ -49,67 +74,55 @@ export default defineComponent({
             }
         });
 
-        const i18n = useI18n();
-
-        const locale = computed<string>({
-            get() {
-                return i18n.locale.value;
-            },
-            set(value) {
-                localStorage.setItem('locale', value);
-                i18n.locale.value = value;
-            }
-        });
-
-        const desiredLocale = getDesiredLocale();
-        if (desiredLocale) {
-            i18n.locale.value = desiredLocale;
-        }
-
         return {
-            selectedType: ref(AmenityType.FoodStore),
-            locale,
+            selectedType: ref(defaultAmenityType),
+            map: ref<InstanceType<typeof MapView> | null>(null),
             loadingCompleted
         };
     },
     methods: {
         onSelectedTypeChanged(type: AmenityType) {
             this.selectedType = type;
+        },
+        onLocationProvided(pos: LatLngExpression) {
+            if (this.map) {
+                this.map.panTo(pos);
+            }
         }
     }
 });
 
-function getDesiredLocale() {
-    let locale = localStorage.getItem('locale');
-    if (!locale) {
-        for (const language of navigator.languages) {
-            const index = language.indexOf('-');
-            const lang = (index === -1 ? language : language.substring(0, index)).toLowerCase();
-            if (lang === 'fr' || lang === 'en') {
-                locale = `${lang}-CA`;
-                localStorage.setItem('locale', locale);
-                break;
-            }
-        }
-    }
-    return locale;
-}
 </script>
 
 <style scoped>
 main {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 1em;
-}
-#map {
     flex: 1;
 }
-#filter {
-    padding: 0.5em;
+header {
+    display: flex;
+    padding: var(--sz-10);
+    padding-left: var(--sz-200);
+    padding-right: var(--sz-200);
+    align-items: center;
+    gap: var(--sz-200);
+    border-bottom: 1px solid var(--color-border);
 }
+.logo {
+    display: inline;
+    font-size: 24px;
+    margin: 0;
+    white-space: nowrap;
+}
+.type-filter-parent {
+  flex: 1;
+}
+.type-filter {
+  max-width: 200px;
+  margin-right: var(--sz-30);
+}
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -123,4 +136,23 @@ main {
   justify-content: center;
   align-items: center;
 }
+
+@media only screen and (min-width: 600px) {
+  .type-filter {
+    max-width: 250px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .type-filter {
+    max-width: 300px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .type-filter {
+    max-width: 400px;
+  }
+}
+
 </style>

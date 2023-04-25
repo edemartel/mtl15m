@@ -1,5 +1,10 @@
 import { createApp } from 'vue';
-import './style.css';
+
+import './assets/style.css';
+import 'vue-select/dist/vue-select.css';
+import '@fortawesome/fontawesome-free/css/fontawesome.css';
+import '@fortawesome/fontawesome-free/css/solid.css';
+
 import App from './App.vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
