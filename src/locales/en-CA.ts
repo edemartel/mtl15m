@@ -6,6 +6,7 @@ export default {
     go_to_position: 'Go to your position',
     filter_by_type: 'Show accessibility for this amenity',
     legend: 'Legend',
+    correction: 'Report an error',
 
     // Amenity types
     amenities: 'Amenities',
