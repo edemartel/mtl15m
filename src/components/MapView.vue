@@ -36,9 +36,8 @@ import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution } from '@v
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
-import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
+import { AreaProperties } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
-import { hsvToRgb, toHex } from '../utils/colours';
 
 const areaStyle: L.PathOptions = {
     weight: 1,
@@ -62,15 +61,31 @@ export default defineComponent({
         }
     },
     setup(props) {        
+        function distanceToHexColour(distance: number|undefined) : string {
+            if (distance === undefined || distance > 2500) { // >30m
+                return '#999999'; // Gray
+            } else if (distance > 2100) { //>25m
+                return '#b8432e'; // Red
+            } else if (distance > 1700) { //>20m
+                return '#dd643c'; //Orange
+            } else if (distance > 1250) { //>15m
+                return '#fda668'; // peach
+            } else if (distance > 800) { //>10m
+                return '#abedab'; //light green
+            } else if (distance > 400) { //>5m 
+                return '#5aabac'; //teal
+            } else { //<5m
+                return '#0868ac'; // blue
+            }
+        }
+
         function updateAreaColours(layer: L.GeoJSON, amenityType: AmenityType) {
             if (layer.feature) {
                 const feature = layer.feature as Feature;
                 const properties = feature.properties as AreaProperties;
                 const distance = properties.distances[amenityType];
                 
-                const score = distance !== undefined ? (1 - Math.min(distance.dist / MAX_DISTANCE, 1)) : 0;
-                const colour = hsvToRgb(score / 2, 1, 0.6);
-                const hexColour = toHex(colour);
+                const hexColour = distanceToHexColour(distance?.dist);
 
                 layer.setStyle({
                     ...areaStyle,
