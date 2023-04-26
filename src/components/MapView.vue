@@ -56,6 +56,7 @@ import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
+import { useI18n } from 'vue-i18n';
 
 const areaStyle: L.PathOptions = {
     weight: 1,
@@ -130,6 +131,7 @@ export default defineComponent({
         const markers = ref<InstanceType<typeof LLayerGroup> | null>(null);
 
         const selectedArea = ref<Feature | null>(null);
+        const i18n = useI18n();
 
         watch(selectedArea, current => {
             updateBestAmenity(current, props.selectedType);
@@ -145,7 +147,7 @@ export default defineComponent({
                         const marker = L.marker({
                             lng: distances.pt.coordinates[0],
                             lat: distances.pt.coordinates[1]
-                        });
+                        }).bindPopup('<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=' + distances.pt.coordinates[0] + ','  + distances.pt.coordinates[1] + '">' + i18n.t('correction') + '</a>');
                         markers.value.leafletObject.addLayer(marker);
                     }
                 }

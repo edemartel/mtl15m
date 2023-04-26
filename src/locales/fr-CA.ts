@@ -6,6 +6,7 @@ export default {
     go_to_position: 'Allez à votre position',
     filter_by_type: 'Afficher l\'accessibilité pour ce service',
     legend: 'Légende',
+    correction: 'Rapporter une erreur',
 
     // Amenity types
     amenities: 'Services',
