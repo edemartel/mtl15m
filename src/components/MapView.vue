@@ -24,6 +24,24 @@
         prefix=""
         position="bottomright"
       ></l-control-attribution>
+      <l-control position="bottomleft">
+        <div class="legendbox">
+          <div v-t="'legend'"></div>
+          <div
+            v-for="(item, index) in travelTimeToColour"
+            :key="index"
+            class="legend"
+          >
+            <span 
+              :style="{'background-color': item}" 
+              class="legendcolor"
+            >
+                &nbsp;
+            </span>
+            <span class="traveltime">&gt;{{ index }} minutes</span>
+          </div>
+        </div>
+      </l-control>
     </l-map>
   </div>
 </template>
@@ -32,7 +50,7 @@
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
 import { defineComponent, PropType, ref, watch } from 'vue';
-import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution } from '@vue-leaflet/vue-leaflet';
+import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution, LControl } from '@vue-leaflet/vue-leaflet';
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
@@ -46,13 +64,25 @@ const areaStyle: L.PathOptions = {
     opacity: 1
 };
 
+const travelTimeToColour = {
+    30: '#999999', //Grey
+    25: '#b8432e', //Red
+    20: '#dd643c', //Orange
+    15: '#fda668', //Peach
+    10: '#abedab', //Light green
+    5: '#5aabac', //Teal
+    0: '#0868ac', //Blue
+
+};
+
 export default defineComponent({
     components: {
         LMap,
         LTileLayer,
         LGeoJson,
         LLayerGroup,
-        LControlAttribution
+        LControlAttribution,
+        LControl
     },
     props: {
         selectedType: {
@@ -62,20 +92,20 @@ export default defineComponent({
     },
     setup(props) {        
         function distanceToHexColour(distance: number|undefined) : string {
-            if (distance === undefined || distance > 2500) { // >30m
-                return '#999999'; // Gray
-            } else if (distance > 2100) { //>25m
-                return '#b8432e'; // Red
-            } else if (distance > 1700) { //>20m
-                return '#dd643c'; //Orange
-            } else if (distance > 1250) { //>15m
-                return '#fda668'; // peach
-            } else if (distance > 800) { //>10m
-                return '#abedab'; //light green
-            } else if (distance > 400) { //>5m 
-                return '#5aabac'; //teal
-            } else { //<5m
-                return '#0868ac'; // blue
+            if (distance === undefined || distance > 2500) {
+                return travelTimeToColour[30]; 
+            } else if (distance > 2100) {
+                return travelTimeToColour[25]; 
+            } else if (distance > 1700) { 
+                return travelTimeToColour[20]; 
+            } else if (distance > 1250) {
+                return travelTimeToColour[15];
+            } else if (distance > 800) {
+                return travelTimeToColour[10];
+            } else if (distance > 400) {  
+                return travelTimeToColour[5];
+            } else {
+                return travelTimeToColour[0];
             }
         }
 
@@ -167,6 +197,11 @@ export default defineComponent({
             markers
         };
     },
+    data() {
+        return {
+            travelTimeToColour: travelTimeToColour
+        };
+    },
     mounted() {
         if(this.mapOwner) {
             this.resizeObserver.observe(this.mapOwner);
@@ -195,6 +230,15 @@ export default defineComponent({
 .map-owner {
   height: 100%;
 }
+.legendbox {
+    background-color: white;
+    padding: 5px;
+}
+
+.legendbox .legendcolor {
+    margin-right: 5px;
+}
+
 </style>
 <style>
 .leaflet-container {

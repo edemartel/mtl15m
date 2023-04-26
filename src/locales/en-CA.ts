@@ -5,6 +5,7 @@ export default {
     logo: 'Logo',
     go_to_position: 'Go to your position',
     filter_by_type: 'Show accessibility for this amenity',
+    legend: 'Legend',
 
     // Amenity types
     amenities: 'Amenities',
