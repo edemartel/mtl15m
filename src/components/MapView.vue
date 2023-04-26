@@ -24,6 +24,24 @@
         prefix=""
         position="bottomright"
       ></l-control-attribution>
+      <l-control position="bottomleft">
+        <div class="legendbox">
+          <div v-t="'legend'"></div>
+          <div
+            v-for="(item, index) in travelTimeToColour"
+            :key="index"
+            class="legend"
+          >
+            <span 
+              :style="{'background-color': item}" 
+              class="legendcolor"
+            >
+                &nbsp;
+            </span>
+            <span class="traveltime">&gt;{{ index }} minutes</span>
+          </div>
+        </div>
+      </l-control>
     </l-map>
   </div>
 </template>
@@ -32,13 +50,12 @@
 <script lang="ts">
 import 'leaflet/dist/leaflet.css';
 import { defineComponent, PropType, ref, watch } from 'vue';
-import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution } from '@vue-leaflet/vue-leaflet';
+import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution, LControl } from '@vue-leaflet/vue-leaflet';
 import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
-import { AreaProperties, MAX_DISTANCE } from '../models/area_properties';
+import { AreaProperties } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
-import { hsvToRgb, toHex } from '../utils/colours';
 
 const areaStyle: L.PathOptions = {
     weight: 1,
@@ -47,13 +64,25 @@ const areaStyle: L.PathOptions = {
     opacity: 1
 };
 
+const travelTimeToColour = {
+    30: '#999999', //Grey
+    25: '#b8432e', //Red
+    20: '#dd643c', //Orange
+    15: '#fda668', //Peach
+    10: '#abedab', //Light green
+    5: '#5aabac', //Teal
+    0: '#0868ac', //Blue
+
+};
+
 export default defineComponent({
     components: {
         LMap,
         LTileLayer,
         LGeoJson,
         LLayerGroup,
-        LControlAttribution
+        LControlAttribution,
+        LControl
     },
     props: {
         selectedType: {
@@ -62,15 +91,31 @@ export default defineComponent({
         }
     },
     setup(props) {        
+        function distanceToHexColour(distance: number|undefined) : string {
+            if (distance === undefined || distance > 2500) {
+                return travelTimeToColour[30]; 
+            } else if (distance > 2100) {
+                return travelTimeToColour[25]; 
+            } else if (distance > 1700) { 
+                return travelTimeToColour[20]; 
+            } else if (distance > 1250) {
+                return travelTimeToColour[15];
+            } else if (distance > 800) {
+                return travelTimeToColour[10];
+            } else if (distance > 400) {  
+                return travelTimeToColour[5];
+            } else {
+                return travelTimeToColour[0];
+            }
+        }
+
         function updateAreaColours(layer: L.GeoJSON, amenityType: AmenityType) {
             if (layer.feature) {
                 const feature = layer.feature as Feature;
                 const properties = feature.properties as AreaProperties;
                 const distance = properties.distances[amenityType];
                 
-                const score = distance !== undefined ? (1 - Math.min(distance.dist / MAX_DISTANCE, 1)) : 0;
-                const colour = hsvToRgb(score / 2, 1, 0.6);
-                const hexColour = toHex(colour);
+                const hexColour = distanceToHexColour(distance?.dist);
 
                 layer.setStyle({
                     ...areaStyle,
@@ -152,6 +197,11 @@ export default defineComponent({
             markers
         };
     },
+    data() {
+        return {
+            travelTimeToColour: travelTimeToColour
+        };
+    },
     mounted() {
         if(this.mapOwner) {
             this.resizeObserver.observe(this.mapOwner);
@@ -180,6 +230,15 @@ export default defineComponent({
 .map-owner {
   height: 100%;
 }
+.legendbox {
+    background-color: white;
+    padding: 5px;
+}
+
+.legendbox .legendcolor {
+    margin-right: 5px;
+}
+
 </style>
 <style>
 .leaflet-container {
