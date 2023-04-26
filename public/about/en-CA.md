@@ -10,7 +10,7 @@ Montreal was subdivided in areas following the limits of Statistics Canada's dis
 
 For each area, we only consider amenities within a radius of 2.5 km as the crow flies of its centre. The distance of 2.5 km was chosen because it is 30 minutes at a typical walking speed of 5 km/h. For the remaining amenities, we then compute the walking distance using a local execution of [OpenRouteService](https://openrouteservice.org/). The shortest path for a specific category of amenities is then chosen as the distance between that area and that category.
 
-The colour shown on the map is simply calculated based on the ratio between that distance and the maximum chosen distance of 2.5 km. The data is then displayed over a map with tiles provided by [the OpenStreetMap project](https://www.openstreetmap.org/).
+The colour shown on the map is a based on the estimated time to travel. The data is then displayed over a map with tiles provided by [the OpenStreetMap project](https://www.openstreetmap.org/).
 
 # Sources
 
