@@ -147,7 +147,7 @@ export default defineComponent({
                         const marker = L.marker({
                             lng: distances.pt.coordinates[0],
                             lat: distances.pt.coordinates[1]
-                        }).bindPopup('<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=' + distances.pt.coordinates[0] + ','  + distances.pt.coordinates[1] + '">' + i18n.t('correction') + '</a>');
+                        }).bindPopup('<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=' + distances.pt.coordinates[1] + ','  + distances.pt.coordinates[0] + '">' + i18n.t('correction') + '</a>');
                         markers.value.leafletObject.addLayer(marker);
                     }
                 }
