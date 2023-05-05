@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { AmenityType, defaultAmenityType } from '../models/amenity_type';
+import { AmenityType, defaultAmenityType, amenityIconClasses } from '../models/amenity_type';
 import vSelect from 'vue-select';
 import { useI18n } from 'vue-i18n';
 
@@ -69,19 +69,6 @@ export default defineComponent({
         }
     }
 });
-
-const amenityIconClasses: { [type in AmenityType]: string } = {
-    [AmenityType.Clinic]: 'house-medical',
-    [AmenityType.Daycare]: 'child-reaching',
-    [AmenityType.FoodStore]: 'carrot',
-    [AmenityType.Library]: 'book',
-    [AmenityType.MetroStation]: 'train-subway',
-    [AmenityType.Park]: 'tree',
-    [AmenityType.Pharmacy]: 'pills',
-    [AmenityType.Restaurant]: 'mug-saucer',
-    [AmenityType.PrimarySchool]: 'school',
-    [AmenityType.SecondarySchool]: 'graduation-cap'
-};
 
 </script>
 

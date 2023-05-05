@@ -51,11 +51,11 @@
 import 'leaflet/dist/leaflet.css';
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { LMap, LTileLayer, LGeoJson, LLayerGroup, LControlAttribution, LControl } from '@vue-leaflet/vue-leaflet';
-import L from 'leaflet';
+import L, { icon } from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties } from '../models/area_properties';
-import { AmenityType } from '../models/amenity_type';
+import { AmenityType, amenityIconClasses } from '../models/amenity_type';
 import { useI18n } from 'vue-i18n';
 
 const areaStyle: L.PathOptions = {
@@ -147,7 +147,11 @@ export default defineComponent({
                         const marker = L.marker({
                             lng: distances.pt.coordinates[0],
                             lat: distances.pt.coordinates[1]
-                        }).bindPopup('<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=' + distances.pt.coordinates[1] + ','  + distances.pt.coordinates[0] + '">' + i18n.t('correction') + '</a>');
+                        },
+                        {icon: L.divIcon({
+                            html: '<div><i class="fa-solid fa-'+ amenityIconClasses[type] +' mapicon"></i></div>',
+                            iconSize: [20, 20],
+                        })}).bindPopup('<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=' + distances.pt.coordinates[1] + ','  + distances.pt.coordinates[0] + '">' + i18n.t('correction') + '</a>');
                         markers.value.leafletObject.addLayer(marker);
                     }
                 }
@@ -262,6 +266,13 @@ path.leaflet-interactive:focus {
     color: var(--color-accent);
     background-color: var(--color-background);
     text-decoration: none;
+}
+
+.mapicon {
+  text-align: center;
+  line-height: 20px;
+  display: block;
+  font-size: 1.3em;
 }
 
 </style>
