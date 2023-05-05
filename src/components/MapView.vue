@@ -156,9 +156,6 @@ export default defineComponent({
 
         const geoJsonOptions: L.GeoJSONOptions = {
             onEachFeature(feature: Feature, layer: L.GeoJSON) {
-                if (feature.id) {
-                    layer.bindTooltip(feature.id as string);
-                }
                 updateAreaColours(layer, props.selectedType);
                 layer.addEventListener('click', () => {
                     selectedArea.value = feature;
