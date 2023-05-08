@@ -26,20 +26,44 @@
       ></l-control-attribution>
       <l-control position="bottomleft">
         <div class="legendbox">
-          <div v-t="'legend'"></div>
-          <div
-            v-for="(item, index) in travelTimeToColour"
-            :key="index"
-            class="legend"
-          >
-            <span 
-              :style="{'background-color': item}" 
-              class="legendcolor"
+          <h3 v-t="'legend'"></h3>
+          <table class="legend">
+            <tr
+              v-for="time of breakpoints"
+              :key="time"
             >
-                &nbsp;
-            </span>
-            <span class="traveltime">&gt;{{ index }} minutes</span>
-          </div>
+              <td 
+                :style="{'background-color': `var(--color-distance-l${time}`}" 
+                class="colour"
+              >
+              </td>
+              <td>
+                <i class="fa-solid fa-less-than"></i>
+              </td>
+              <td class="time">
+                {{ time }}
+              </td>
+              <td>
+                minutes
+              </td>
+            </tr>
+            <tr>
+              <td 
+                style="background-color: var(--color-distance-inf)" 
+                class="colour"
+              >
+              </td>
+              <td>
+                <i class="fa-solid fa-greater-than"></i>
+              </td>
+              <td class="time">
+                30
+              </td>
+              <td>
+                minutes
+              </td>
+            </tr>
+          </table>
         </div>
       </l-control>
     </l-map>
@@ -57,6 +81,8 @@ import { Feature } from 'geojson';
 import { AreaProperties } from '../models/area_properties';
 import { AmenityType } from '../models/amenity_type';
 import { useI18n } from 'vue-i18n';
+import { List } from 'immutable';
+import { WALKING_SPEED, MAX_TIME } from '../models/area_properties';
 
 const areaStyle: L.PathOptions = {
     weight: 1,
@@ -65,16 +91,8 @@ const areaStyle: L.PathOptions = {
     opacity: 1
 };
 
-const travelTimeToColour = {
-    30: '#999999', //Grey
-    25: '#b8432e', //Red
-    20: '#dd643c', //Orange
-    15: '#fda668', //Peach
-    10: '#abedab', //Light green
-    5: '#5aabac', //Teal
-    0: '#0868ac', //Blue
-
-};
+const timeIncrement = 5;
+const breakpoints = List([...Array(6).keys()].map(x => (x + 1) * timeIncrement));
 
 export default defineComponent({
     components: {
@@ -91,23 +109,17 @@ export default defineComponent({
             default: AmenityType.FoodStore
         }
     },
-    setup(props) {        
-        function distanceToHexColour(distance: number|undefined) : string {
-            if (distance === undefined || distance > 2500) {
-                return travelTimeToColour[30]; 
-            } else if (distance > 2100) {
-                return travelTimeToColour[25]; 
-            } else if (distance > 1700) { 
-                return travelTimeToColour[20]; 
-            } else if (distance > 1250) {
-                return travelTimeToColour[15];
-            } else if (distance > 800) {
-                return travelTimeToColour[10];
-            } else if (distance > 400) {  
-                return travelTimeToColour[5];
-            } else {
-                return travelTimeToColour[0];
+    setup(props) {
+        function distanceToHexColour(distance: number | undefined) : string {
+            let index = Number.POSITIVE_INFINITY;
+            if(distance !== undefined) {
+                const time = distance / WALKING_SPEED;
+                index = Math.ceil(time / timeIncrement) * timeIncrement;
             }
+            if (index > MAX_TIME) {
+                return 'var(--color-distance-inf)';
+            }
+            return `var(--color-distance-l${index})`;
         }
 
         function updateAreaColours(layer: L.GeoJSON, amenityType: AmenityType) {
@@ -198,7 +210,7 @@ export default defineComponent({
     },
     data() {
         return {
-            travelTimeToColour: travelTimeToColour
+            breakpoints
         };
     },
     mounted() {
@@ -229,13 +241,36 @@ export default defineComponent({
 .map-owner {
   height: 100%;
 }
+
+
 .legendbox {
-    background-color: white;
-    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10%;
+    padding: 10px;
+    padding-top: 5px;
 }
 
-.legendbox .legendcolor {
-    margin-right: 5px;
+.legend {
+    font-size: 1.1em;
+}
+
+.legend td {
+    vertical-align: middle;
+    height: 22px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.legend .colour {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.legend .time {
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: right;
 }
 
 </style>
