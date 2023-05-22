@@ -55,7 +55,7 @@ import L from 'leaflet';
 import { useMapStore } from '../stores/map';
 import { Feature } from 'geojson';
 import { AreaProperties } from '../models/area_properties';
-import { AmenityType } from '../models/amenity_type';
+import { AmenityType, amenityIconClasses } from '../models/amenity_type';
 import { useI18n } from 'vue-i18n';
 
 const areaStyle: L.PathOptions = {
@@ -73,7 +73,6 @@ const travelTimeToColour = {
     10: '#abedab', //Light green
     5: '#5aabac', //Teal
     0: '#0868ac', //Blue
-
 };
 
 export default defineComponent({
@@ -144,10 +143,18 @@ export default defineComponent({
                     const properties = feature.properties as AreaProperties;
                     const distances = properties.distances[type];
                     if(distances) {
-                        const marker = L.marker({
+                        const pos: L.LatLngLiteral = {
                             lng: distances.pt.coordinates[0],
                             lat: distances.pt.coordinates[1]
-                        }).bindPopup('<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=' + distances.pt.coordinates[1] + ','  + distances.pt.coordinates[0] + '">' + i18n.t('correction') + '</a>');
+                        };
+                        const options: L.MarkerOptions = {
+                            icon: L.divIcon({
+                                html: `<i class="fa-solid fa-${amenityIconClasses[type]} mapicon"></i>`,
+                                iconSize: [36, 36],
+                            })
+                        };
+                        const marker = L.marker(pos, options);
+                        marker.bindPopup(`<a href="https://docs.google.com/forms/d/e/1FAIpQLSdAW14AmmplUH8iNPzhTJZ4UY-DW9OY9TR78C6_OIPYy2L7_g/viewform?usp=pp_url&entry.919457431=${distances.pt.coordinates[1]},${distances.pt.coordinates[0]}">${i18n.t('correction')}</a>`);
                         markers.value.leafletObject.addLayer(marker);
                     }
                 }
@@ -262,6 +269,21 @@ path.leaflet-interactive:focus {
     color: var(--color-accent);
     background-color: var(--color-background);
     text-decoration: none;
+}
+
+.leaflet-marker-icon {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+}
+
+.mapicon {
+    color: white;
+    display: block;
+    font-size: 20px;
 }
 
 </style>
