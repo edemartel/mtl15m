@@ -11,6 +11,14 @@
 
   --ff-primary: 'Rubik';
   --fw-regular: 500;
+
+  --color-distance-inf: #999999;
+  --color-distance-l5: #0868ac;
+  --color-distance-l10: #5aabac;
+  --color-distance-l15: #abedab;
+  --color-distance-l20: #fda668;
+  --color-distance-l25: #dd643c;
+  --color-distance-l30: #b8432e;
 }
 
 :root {
@@ -84,6 +92,11 @@ a {
 
 a:hover {
   color: var(--color-accent-light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
 }
 
 @media only screen and (max-width: 599px) {
