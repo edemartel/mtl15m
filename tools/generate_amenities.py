@@ -6,6 +6,7 @@ import shapefile
 import geojson
 from shapely import geometry
 from shapely import ops
+from shapely import get_coordinates
 import pyproj
 
 amenities = {}
@@ -61,8 +62,9 @@ with open(os.path.join(source_path, 'amenities', 'espace_vert.json'), 'r', encod
         park_type = feature.properties['TYPO1']
         if park_type and park_type.lower().startswith('parc'):
             polygon = geometry.shape(feature.geometry)
-            pt = geometry.Point(polygon.centroid.x, polygon.centroid.y)
-            amenities.setdefault('park', set()).add(pt)
+            
+            for point in get_coordinates(polygon):
+                amenities.setdefault('park', set()).add(geometry.Point(point[0], point[1]))    
 
 
 with shapefile.Reader(os.path.join(source_path, 'amenities', 'etablissements-meq-mes-esrishp.zip/PPS_Public_Ecole.shp'), encoding='latin1') as reader:
